@@ -2,8 +2,9 @@
 
 **Status (2026-09-30):**
 - Case 1 (MiMo-V2.6-RL-oss cyber vs CyberGym) is done and published in this repo.
-- The public note is drafted in `drafts/`, which is local only (gitignored). It is not posted yet.
+- The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). It has no reply yet. The dev.to and social drafts in `drafts/` (local only, gitignored) are not posted yet.
 - Origin: idea I-20260929-02 in the private `ai-research` scouting repo.
+- Phase-2 scouting notes from 2026-09-30 (unverified, with pinned SHAs) are local only in `drafts/scouting_2026-09-30.md`.
 
 ## Claim we can support
 Open agentic RL/SFT releases can overlap agentic benchmarks at the level of the **source item**: the same vulnerability, the same PR. The text can differ while the item is the same. Text-based decontamination misses this, and naive ID joins miss part of it, because upstream IDs get renumbered.
@@ -20,8 +21,8 @@ The case-1 numbers are in README.md:
 - That we are the first to check open agentic training sets for overlap. TMax ([2606.23321](https://arxiv.org/abs/2606.23321)) did a text-level check on terminal and SWE sets.
 
 ## Phase 1: public note (now)
-1. The user posts `drafts/hf_discussion.md` on the MiMo-V2.6-RL-oss discussions page from their own account.
-2. Wait for a reply, or 3–7 days. Then publish `drafts/devto.md` and `drafts/social.md`, updated with any reply.
+1. ~~The user posts `drafts/hf_discussion.md` on the MiMo-V2.6-RL-oss discussions page from their own account.~~ Done 2026-09-30 (#6).
+2. Wait for a reply, or 3–7 days (until 2026-10-03 to 2026-10-07). Then publish `drafts/devto.md` and `drafts/social.md`, updated with any reply.
 3. Hold `drafts/optional_model_repo_question.md` (Xiaomi's modified CyberGym harness). Post it on the model repo only if the dataset thread goes well.
 4. If Xiaomi fixes or annotates the dataset, update README.md and rerun against the new revision.
 
