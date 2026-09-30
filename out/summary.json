@@ -1,0 +1,63 @@
+{
+  "sources": {
+    "mimo": "XiaomiMiMo/MiMo-V2.6-RL-oss@639865fd3374018d6cb29b9fb82dd531406fcf5f cyber.parquet",
+    "cybergym": "sunblaze-ucb/cybergym@bde190ded494e52bc684b66073b436c9d992c7c6 split=tasks",
+    "arvo_mapping": "https://raw.githubusercontent.com/n132/ARVO/bc2a373c6b32fb3d9e7f86c516b1844885dcec51/arvo/oss_fuzz_mappings.csv",
+    "arvo_v1_pool": "https://api.github.com/repos/n132/ARVO-Meta/git/trees/df107a1b3bc839de773b477a49e86d2d9ee75ff9"
+  },
+  "counts": {
+    "mimo_tasks": 1000,
+    "mimo_unique_bugs": 836,
+    "mimo_duplicated_bugs": 164,
+    "cybergym_tasks": 1507,
+    "cybergym_by_kind": {
+      "arvo": 1368,
+      "oss-fuzz": 139
+    },
+    "arvo_v1_pool": 4993,
+    "mapping_pairs": 71768
+  },
+  "overlap": {
+    "exact_same_prefix": 135,
+    "exact_any_prefix": 139,
+    "translated_cybergym_tasks": 223,
+    "translated_cybergym_share": 0.148,
+    "translated_mimo_tasks": 278,
+    "translated_unique_bugs": 223
+  },
+  "chance_baseline": {
+    "exact_ids_old_scheme": {
+      "pool_N": 4993,
+      "benchmark_in_pool_K": 1368,
+      "sample_n": 445,
+      "expected": 121.9,
+      "sd": 9.0,
+      "observed": 135,
+      "z": 1.46,
+      "p_ge_observed": 0.0816
+    },
+    "unique_bugs_translated": {
+      "pool_N": 4993,
+      "benchmark_in_pool_K": 1368,
+      "sample_n": 710,
+      "expected": 194.5,
+      "sd": 11.0,
+      "observed": 219,
+      "z": 2.22,
+      "p_ge_observed": 0.0154
+    }
+  },
+  "clean_split": {
+    "kept": 613,
+    "removed_cybergym": 278,
+    "removed_duplicates": 109
+  },
+  "signature_check": {
+    "checked": 223,
+    "error_txt_missing": 0,
+    "top_project_frame_agrees": 214,
+    "mimo_site_in_cybergym_stack": 223,
+    "differ": [],
+    "missing": []
+  }
+}
