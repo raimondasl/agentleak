@@ -7,8 +7,11 @@
   },
   "counts": {
     "mimo_tasks": 1000,
-    "mimo_unique_bugs": 836,
-    "mimo_duplicated_bugs": 164,
+    "mimo_old_scheme_ids": 445,
+    "mimo_unique_issues": 836,
+    "mimo_duplicated_issues": 164,
+    "mimo_duplicate_pairs_identical_prompt": 163,
+    "mimo_suspect_specs": 26,
     "cybergym_tasks": 1507,
     "cybergym_by_kind": {
       "arvo": 1368,
@@ -47,17 +50,102 @@
       "p_ge_observed": 0.0154
     }
   },
-  "clean_split": {
-    "kept": 613,
-    "removed_cybergym": 278,
-    "removed_duplicates": 109
+  "filtered_split": {
+    "kept": 594,
+    "removed_cybergym_tasks": 278,
+    "removed_fuzzer_entry_point_only": 20,
+    "removed_duplicate_copies": 108
   },
   "signature_check": {
     "checked": 223,
-    "error_txt_missing": 0,
-    "top_project_frame_agrees": 214,
-    "mimo_site_in_cybergym_stack": 223,
-    "differ": [],
-    "missing": []
+    "result": {
+      "function_and_type": 215,
+      "function_only": 1,
+      "names_fuzzer_entry_point": 4,
+      "file_only": 3
+    },
+    "not_function_and_type": [
+      {
+        "bug": 42477952,
+        "cybergym": "arvo:17171",
+        "grade": "function_only",
+        "cybergym_type": "heap-buffer-overflow",
+        "mimo_spec": [
+          "AddressSanitizer: SEGV in function `xsltFuzzXPath` in file `libxslt/tests/fuzz/fuzz.c`"
+        ]
+      },
+      {
+        "bug": 42491208,
+        "cybergym": "arvo:29103",
+        "grade": "names_fuzzer_entry_point",
+        "cybergym_type": "heap-buffer-overflow",
+        "mimo_spec": [
+          "AddressSanitizer: ABRT in function `LLVMFuzzerInitialize` in file `wolf-ssl-ssh-fuzzers/oss-fuzz/projects/wolf-ssl-ssh/fuzzers/wolfssl/wolfssl/wolfssl-fuzzers/server.c`"
+        ]
+      },
+      {
+        "bug": 42491388,
+        "cybergym": "arvo:29266",
+        "grade": "file_only",
+        "cybergym_type": "stack-buffer-overflow",
+        "mimo_spec": [
+          "AddressSanitizer: stack-buffer-overflow in function `JS::Heap::gather_conservative_roots(AK::HashTable<JS::Cell*, AK::Traits<JS::Cell*>>&)` in file `serenity/Libraries/LibJS/Heap/Heap.cpp`"
+        ]
+      },
+      {
+        "bug": 42498216,
+        "cybergym": "arvo:35410",
+        "grade": "names_fuzzer_entry_point",
+        "cybergym_type": "heap-buffer-overflow",
+        "mimo_spec": [
+          "AddressSanitizer: ABRT in function `LLVMFuzzerInitialize` in file `wolf-ssl-ssh-fuzzers/oss-fuzz/projects/wolf-ssl-ssh/fuzzers/wolfssl/wolfssl/wolfssl-fuzzers/server.c`"
+        ]
+      },
+      {
+        "bug": 42505670,
+        "cybergym": "arvo:42123",
+        "grade": "file_only",
+        "cybergym_type": "SEGV",
+        "mimo_spec": [
+          "AddressSanitizer: SEGV in function `tinygltf::TinyGLTF::LoadFromString(tinygltf::Model*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*, char const*, unsigned int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, unsigned int)` in file `tinygltf/tiny_gltf.h`"
+        ]
+      },
+      {
+        "bug": 42508319,
+        "cybergym": "arvo:4451",
+        "grade": "file_only",
+        "cybergym_type": "use-after-poison",
+        "mimo_spec": [
+          "AddressSanitizer: use-after-poison in function `void rawspeed::LJpegDecompressor::decodeN<4>()::'lambda'(int)::operator()(int) const` in file `librawspeed/src/librawspeed/decompressors/LJpegDecompressor.cpp`"
+        ]
+      },
+      {
+        "bug": 42527736,
+        "cybergym": "arvo:61993",
+        "grade": "names_fuzzer_entry_point",
+        "cybergym_type": "negative-size-param",
+        "mimo_spec": [
+          "AddressSanitizer: ABRT in function `LLVMFuzzerInitialize` in file `php-src/sapi/fuzzer/fuzzer-tracing-jit.c`"
+        ]
+      },
+      {
+        "bug": 42531228,
+        "cybergym": "arvo:65135",
+        "grade": "names_fuzzer_entry_point",
+        "cybergym_type": "SEGV",
+        "mimo_spec": [
+          "AddressSanitizer: ABRT in function `LLVMFuzzerInitialize` in file `php-src/sapi/fuzzer/fuzzer-tracing-jit.c`"
+        ]
+      }
+    ],
+    "control_same_project_other_bug": {
+      "pairs": 1204,
+      "file_only": 82,
+      "no_match": 1021,
+      "function_and_type": 93,
+      "function_only": 3,
+      "names_fuzzer_entry_point": 5,
+      "function_and_type_rate": 0.077
+    }
   }
 }

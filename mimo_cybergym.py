@@ -62,7 +62,9 @@ def load_mimo():
         iid = r["extra_info"]["instance_id"]
         spec = r["prompt"][0]["content"] if r["prompt"] else ""
         m = re.search(r"in function `([^`]*)` in file `([^`]*)`", spec)
+        t = re.search(r"Sanitizer: (.+?) in function", spec)
         tasks.append({"instance_id": iid, "num": trailing_int(iid), "spec": spec,
+                      "type": t.group(1).strip() if t else "",
                       "function": m.group(1) if m else "", "file": m.group(2) if m else ""})
     return tasks
 
@@ -86,7 +88,15 @@ def load_v1_pool() -> set:
     return {trailing_int(Path(t["path"]).stem) for t in tree["tree"] if re.search(r"\d", t["path"])}
 
 
-NON_PROJECT = re.compile(r"compiler-rt|/libfuzzer/|sanitizer_common|/llvm/|FuzzerMain|fuzz(er|ing)?/.*fuzz", re.I)
+HARNESS_FUNCS = {"LLVMFuzzerInitialize", "LLVMFuzzerTestOneInput"}
+
+
+def crash_type(error_txt: str) -> str:
+    """Bug type from the sanitizer report, e.g. 'heap-buffer-overflow', 'SEGV', 'double-free'.
+    The SUMMARY line carries the canonical name; fall back to the headline."""
+    m = (re.search(r"SUMMARY: \w+Sanitizer: ([\w-]+)", error_txt)
+         or re.search(r"(?:ERROR|WARNING): \w+Sanitizer: (?:attempting )?([\w-]+)", error_txt))
+    return m.group(1) if m else ""
 
 
 def first_stack(error_txt: str) -> list:
@@ -99,11 +109,6 @@ def first_stack(error_txt: str) -> list:
         elif started:
             break
     return frames
-
-
-def top_project_frame(frames: list) -> str:
-    """First frame in project code, skipping sanitizer runtime and fuzzer driver frames."""
-    return next((f for f in frames if "/src/" in f and not NON_PROJECT.search(f)), "")
 
 
 def main():
@@ -133,56 +138,74 @@ def main():
     mimo_hit = [t for b in shared for t in mimo_by_bug[b]]
     dups = {b: ts for b, ts in mimo_by_bug.items() if len(ts) > 1}
 
-    # 3. Chance baselines on the ARVO v1 pool, which all CyberGym ARVO tasks come from.
+    # 3. Chance baselines on the ARVO v1 pool (the first ARVO release), which all CyberGym ARVO tasks come from.
     v1_canon = {canon(i) for i in v1}
-    cg_arvo_in_pool = {canon(t["num"]) for t in cg if t["task_id"].startswith("arvo") and t["num"] in v1}
+    assert len(v1_canon) == len(v1), "ARVO mapping collapses v1 IDs"
+    cg_arvo_old = {t["num"] for t in cg if t["task_id"].startswith("arvo")}
+    assert cg_arvo_old <= v1, "CyberGym ARVO task outside the ARVO v1 pool"
     mimo_old_in_pool = {t["num"] for t in mimo if t["num"] in v1}
-    cg_arvo_old = {t["num"] for t in cg if t["task_id"].startswith("arvo") and t["num"] in v1}
     base_exact = hypergeom(len(v1), len(cg_arvo_old), len(mimo_old_in_pool), len(mimo_old_in_pool & cg_arvo_old))
+    cg_arvo_canon = {canon(n) for n in cg_arvo_old}
     mimo_bugs_in_pool = {b for b in mimo_by_bug if b in v1_canon}
-    base_bugs = hypergeom(len(v1), len(cg_arvo_in_pool), len(mimo_bugs_in_pool), len(mimo_bugs_in_pool & cg_arvo_in_pool))
+    base_bugs = hypergeom(len(v1_canon), len(cg_arvo_canon), len(mimo_bugs_in_pool),
+                          len(mimo_bugs_in_pool & cg_arvo_canon))
 
-    # 4. Optional: is it the same crash? Compare MiMo's spec (function, file) with CyberGym's
-    #    ground-truth sanitizer report: top project frame, and anywhere in the first stack.
+    # MiMo tasks whose spec names a fuzzer entry point instead of a crash site in project code
+    # (e.g. "ABRT in function `LLVMFuzzerInitialize`"). These look like environment defects.
+    suspect = [t for t in mimo if t["function"] in HARNESS_FUNCS]
+
+    # 4. Optional corroboration that matched IDs are the same crash. The identity itself comes from
+    #    the ID mapping; here we check MiMo's spec against CyberGym's ground-truth sanitizer report.
+    #    Control: MiMo specs of *other* overlapping bugs from the same project, to see how often
+    #    the check passes by accident.
     sig = None
     if args.signatures:
-        top_agree, in_stack, differ, missing = 0, 0, [], []
+        reports = {}
         for b in shared:
-            c = cg_by_bug[b][0]
-            kind, n = c["task_id"].split(":")
-            try:
-                txt = Path(hf_hub_download(CYBERGYM_REPO, f"data/{kind}/{n}/error.txt",
-                                           repo_type="dataset", revision=cg_rev)).read_text(errors="replace")
-            except Exception as e:
-                missing.append({"cybergym": c["task_id"], "reason": type(e).__name__})
-                continue
-            frames = first_stack(txt)
-            top = top_project_frame(frames)
-            specs = mimo_by_bug[b]
-            def hit(frame, m):
-                same_fn = bool(m["function"]) and f" in {m['function']} " in frame
-                same_file = bool(m["file"]) and m["file"].split("/", 1)[-1] in frame
-                return same_fn or same_file
+            kind, n = cg_by_bug[b][0]["task_id"].split(":")
+            txt = Path(hf_hub_download(CYBERGYM_REPO, f"data/{kind}/{n}/error.txt",
+                                       repo_type="dataset", revision=cg_rev)).read_text(errors="replace")
+            reports[b] = (first_stack(txt), crash_type(txt))
 
-            if any(hit(top, m) for m in specs):
-                top_agree += 1
-            if any(hit(f, m) for f in frames for m in specs):
-                in_stack += 1
-            else:
-                differ.append({"cybergym": c["task_id"], "cybergym_top_frame": top,
-                               "mimo_spec": sorted({m["spec"] for m in specs})})
-        sig = {"checked": len(shared), "error_txt_missing": len(missing),
-               "top_project_frame_agrees": top_agree, "mimo_site_in_cybergym_stack": in_stack,
-               "differ": differ, "missing": missing}
+        def grade(b, m):
+            frames, cg_type = reports[b]
+            if m["function"] in HARNESS_FUNCS:
+                return "names_fuzzer_entry_point"
+            fn = bool(m["function"]) and any(f" in {m['function']} " in f for f in frames)
+            if fn and m["type"] and cg_type and m["type"].lower() == cg_type.lower():
+                return "function_and_type"
+            if fn:
+                return "function_only"
+            if m["file"] and any(m["file"].split("/", 1)[-1] in f for f in frames):
+                return "file_only"
+            return "no_match"
 
-    # 5. Clean split: drop MiMo tasks whose bug is in CyberGym; keep one task per duplicated bug.
-    clean, seen = [], set()
-    for t in mimo:
-        b = canon(t["num"])
-        if b in cg_by_bug or b in seen:
+        order = ["function_and_type", "function_only", "file_only", "names_fuzzer_entry_point", "no_match"]
+        best = {b: min((grade(b, m) for m in mimo_by_bug[b]), key=order.index) for b in shared}
+        project = {b: cg_by_bug[b][0]["project"] for b in shared}
+        control = [grade(b, m) for b in shared for b2 in shared
+                   if b2 != b and project[b2] == project[b] for m in mimo_by_bug[b2]]
+        cc = Counter(control)
+        sig = {"checked": len(shared), "result": dict(Counter(best.values())),
+               "not_function_and_type": [{"bug": b, "cybergym": cg_by_bug[b][0]["task_id"], "grade": g,
+                                          "cybergym_type": reports[b][1],
+                                          "mimo_spec": sorted({m["spec"] for m in mimo_by_bug[b]})}
+                                         for b, g in best.items() if g != "function_and_type"],
+               "control_same_project_other_bug": {"pairs": len(control), **dict(cc),
+                                                  "function_and_type_rate": round(cc["function_and_type"] / max(len(control), 1), 3)}}
+
+    # 5. Filtered split: drop bugs that are in CyberGym, keep one task per remaining bug (preferring a
+    #    spec that names a real crash site), and drop bugs whose only spec names a fuzzer entry point.
+    clean, dropped_suspect = [], 0
+    for b, ts in mimo_by_bug.items():  # first-appearance order
+        if b in cg_by_bug:
             continue
-        seen.add(b)
-        clean.append(t["instance_id"])
+        good = [t for t in ts if t["function"] not in HARNESS_FUNCS]
+        if good:
+            clean.append(good[0]["instance_id"])
+        else:
+            dropped_suspect += len(ts)
+    non_cg_tasks = sum(len(ts) for b, ts in mimo_by_bug.items() if b not in cg_by_bug)
 
     # Outputs
     with open(OUT / "overlap.csv", "w", newline="") as f:
@@ -199,12 +222,19 @@ def main():
         for b, ts in sorted(dups.items()):
             w.writerow([b, ";".join(t["instance_id"] for t in ts), len({t["spec"] for t in ts}) == 1])
     (OUT / "mimo_cyber_clean_ids.txt").write_text("\n".join(clean) + "\n")
+    with open(OUT / "mimo_suspect_specs.csv", "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["mimo_instance_id", "spec", "bug_in_cybergym"])
+        for t in suspect:
+            w.writerow([t["instance_id"], t["spec"], canon(t["num"]) in cg_by_bug])
 
     summary = {
         "sources": {"mimo": f"{MIMO_REPO}@{MIMO_REV} cyber.parquet", "cybergym": f"{CYBERGYM_REPO}@{cg_rev} split=tasks",
                     "arvo_mapping": ARVO_MAPPING, "arvo_v1_pool": ARVO_V1_META_TREE},
-        "counts": {"mimo_tasks": len(mimo), "mimo_unique_bugs": len(mimo_by_bug),
-                   "mimo_duplicated_bugs": len(dups), "cybergym_tasks": len(cg),
+        "counts": {"mimo_tasks": len(mimo), "mimo_old_scheme_ids": sum(t["num"] < 10**6 for t in mimo),
+                   "mimo_unique_issues": len(mimo_by_bug), "mimo_duplicated_issues": len(dups),
+                   "mimo_duplicate_pairs_identical_prompt": sum(len({t["spec"] for t in ts}) == 1 for ts in dups.values()),
+                   "mimo_suspect_specs": len(suspect), "cybergym_tasks": len(cg),
                    "cybergym_by_kind": dict(Counter(t["task_id"].split(":")[0] for t in cg)),
                    "arvo_v1_pool": len(v1), "mapping_pairs": len(old2new)},
         "overlap": {"exact_same_prefix": len(exact_same_prefix), "exact_any_prefix": len(exact),
@@ -212,16 +242,15 @@ def main():
                     "translated_cybergym_share": round(len(cg_hit) / len(cg), 4),
                     "translated_mimo_tasks": len(mimo_hit), "translated_unique_bugs": len(shared)},
         "chance_baseline": {"exact_ids_old_scheme": base_exact, "unique_bugs_translated": base_bugs},
-        "clean_split": {"kept": len(clean), "removed_cybergym": len(mimo_hit),
-                        "removed_duplicates": len(mimo) - len(clean) - len(mimo_hit)},
+        "filtered_split": {"kept": len(clean), "removed_cybergym_tasks": len(mimo_hit),
+                           "removed_fuzzer_entry_point_only": dropped_suspect,
+                           "removed_duplicate_copies": non_cg_tasks - len(clean) - dropped_suspect},
         "signature_check": sig,
     }
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2))
-    print(json.dumps({k: summary[k] for k in ("counts", "overlap", "chance_baseline", "clean_split")}, indent=2))
+    print(json.dumps({k: summary[k] for k in ("counts", "overlap", "chance_baseline", "filtered_split")}, indent=2))
     if sig:
-        print(f"signatures: top project frame agrees {sig['top_project_frame_agrees']}/{sig['checked']}; "
-              f"MiMo site in CyberGym stack {sig['mimo_site_in_cybergym_stack']}/{sig['checked']}; "
-              f"error.txt missing {sig['error_txt_missing']}")
+        print("signatures:", json.dumps(sig["result"]), "| control:", json.dumps(sig["control_same_project_other_bug"]))
 
 
 if __name__ == "__main__":
