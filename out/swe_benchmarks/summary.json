@@ -1,0 +1,323 @@
+{
+  "sources": {
+    "multi_swe_bench": "ByteDance-Seed/Multi-SWE-bench@56ff018c04a38e27ada1e9d0a6d5839a51f88f0d",
+    "swe_polybench": "AmazonScience/SWE-PolyBench@d56445f9940eae4e9d2974ec66820c2f1d7754e6",
+    "swe_polybench_verified": "AmazonScience/SWE-PolyBench_Verified@b3fca77b637379f0c01ad86d18753a7ac1998b53",
+    "swe_bench_multilingual": "SWE-bench/SWE-bench_Multilingual@846e647b9f33c0b51b739d005d13d85493c9af09",
+    "swe_bench": "SWE-bench/SWE-bench@c6fe717fd7a4c3ac1daa4055a4fd082c6a1d28a2 (test split)",
+    "swe_bench_verified": "SWE-bench/SWE-bench_Verified@78f471bf655a3137b2e8a75af1501690ec009ec3",
+    "swe_bench_pro": "ScaleAI/SWE-bench_Pro@2d52cb3df914a3fcf80c7f66738b3a88ae37fc50 (default, hard and v1 configs, deduplicated by instance_id)"
+  },
+  "notes": [
+    "Multi-SWE-bench's python/ folder (a copy of SWE-bench Verified, as Multi-SWE-bench states) is left out.",
+    "overlap = the same PR (any base commit; split by base commit and fix), or for SWE-bench Pro, which has no PR numbers, the same base commit with identical fix blobs. Same base commit with a different PR is a different task and is not counted.",
+    "longest_shared_text_run compares the two benchmarks' problem texts (Multi-SWE-bench: resolved issues, title + body)."
+  ],
+  "benchmark_items": {
+    "Multi-SWE-bench": 1632,
+    "Multi-SWE-bench (Kotlin extension)": 105,
+    "SWE-PolyBench": 2110,
+    "SWE-bench Multilingual": 300,
+    "SWE-bench": 2294,
+    "SWE-bench Pro": 731
+  },
+  "patches_without_index_lines": {
+    "Multi-SWE-bench": 0,
+    "Multi-SWE-bench (Kotlin extension)": 0,
+    "SWE-PolyBench": 1561,
+    "SWE-bench Multilingual": 0,
+    "SWE-bench": 2293,
+    "SWE-bench Pro": 0
+  },
+  "subset_items": {
+    "SWE-PolyBench Verified": 382,
+    "SWE-bench Verified": 500
+  },
+  "benchmark_pairs": {
+    "Multi-SWE-bench x SWE-PolyBench": {
+      "pairs_by_kind": {
+        "same PR, same base commit": 109,
+        "same base commit, different PR": 12
+      },
+      "overlap_pairs": 109,
+      "overlap_items": {
+        "Multi-SWE-bench": 109,
+        "SWE-PolyBench": 109
+      },
+      "share_of_benchmark": {
+        "Multi-SWE-bench": 0.0668,
+        "SWE-PolyBench": 0.0517
+      },
+      "overlap_found_by_join": {
+        "exact_repo_pr": 109,
+        "case_insensitive_repo_pr": 109,
+        "base_commit_and_pr": 109,
+        "base_commit": 109
+      },
+      "overlap_fix_by_blobs": {
+        "not_comparable": 109
+      },
+      "overlap_fix_by_changed_lines_where_blobs_not_comparable": {
+        "identical": 109
+      },
+      "overlap_in_subsets": {
+        "SWE-PolyBench Verified": 13,
+        "SWE-bench Verified": 0
+      },
+      "overlap_by_repo": {
+        "mui/material-ui": 107,
+        "apache/dubbo": 1,
+        "google/gson": 1
+      },
+      "overlap_longest_shared_text_run": {
+        "median": 211,
+        "min": 46,
+        "pairs_ge_13": 109,
+        "pairs_lt_13": []
+      }
+    },
+    "Multi-SWE-bench x SWE-bench Multilingual": {
+      "pairs_by_kind": {
+        "same PR, same base commit": 9,
+        "same PR, different base commit, identical fix": 10,
+        "same base commit, different PR": 3
+      },
+      "overlap_pairs": 19,
+      "overlap_items": {
+        "Multi-SWE-bench": 19,
+        "SWE-bench Multilingual": 19
+      },
+      "share_of_benchmark": {
+        "Multi-SWE-bench": 0.0116,
+        "SWE-bench Multilingual": 0.0633
+      },
+      "overlap_found_by_join": {
+        "exact_repo_pr": 17,
+        "case_insensitive_repo_pr": 19,
+        "base_commit_and_pr": 9,
+        "base_commit": 9
+      },
+      "overlap_fix_by_blobs": {
+        "identical": 19
+      },
+      "overlap_fix_by_changed_lines_where_blobs_not_comparable": {},
+      "overlap_in_subsets": {
+        "SWE-PolyBench Verified": 0,
+        "SWE-bench Verified": 0
+      },
+      "overlap_by_repo": {
+        "fmtlib/fmt": 8,
+        "jqlang/jq": 4,
+        "burntsushi/ripgrep": 2,
+        "google/gson": 1,
+        "axios/axios": 1,
+        "nushell/nushell": 1,
+        "sharkdp/bat": 1,
+        "vuejs/core": 1
+      },
+      "overlap_longest_shared_text_run": {
+        "median": 112,
+        "min": 3,
+        "pairs_ge_13": 17,
+        "pairs_lt_13": [
+          "axios__axios-5085 / axios__axios-5085: 3",
+          "nushell__nushell-12901 / nushell__nushell-12901: 4"
+        ]
+      }
+    },
+    "SWE-PolyBench x SWE-bench Multilingual": {
+      "pairs_by_kind": {
+        "same PR, same base commit": 2,
+        "same PR, different base commit, fix not_comparable": 2
+      },
+      "overlap_pairs": 4,
+      "overlap_items": {
+        "SWE-PolyBench": 4,
+        "SWE-bench Multilingual": 4
+      },
+      "share_of_benchmark": {
+        "SWE-PolyBench": 0.0019,
+        "SWE-bench Multilingual": 0.0133
+      },
+      "overlap_found_by_join": {
+        "exact_repo_pr": 4,
+        "case_insensitive_repo_pr": 4,
+        "base_commit_and_pr": 2,
+        "base_commit": 2
+      },
+      "overlap_fix_by_blobs": {
+        "not_comparable": 4
+      },
+      "overlap_fix_by_changed_lines_where_blobs_not_comparable": {
+        "identical": 4
+      },
+      "overlap_in_subsets": {
+        "SWE-PolyBench Verified": 3,
+        "SWE-bench Verified": 0
+      },
+      "overlap_by_repo": {
+        "google/gson": 4
+      },
+      "overlap_longest_shared_text_run": {
+        "median": 174.0,
+        "min": 24,
+        "pairs_ge_13": 4,
+        "pairs_lt_13": []
+      }
+    }
+  },
+  "items_in_any_other_benchmark": {
+    "Multi-SWE-bench": {
+      "items": 128,
+      "share": 0.0784,
+      "in_two_other_benchmarks": 0
+    },
+    "Multi-SWE-bench (Kotlin extension)": {
+      "items": 0,
+      "share": 0.0,
+      "in_two_other_benchmarks": 0
+    },
+    "SWE-PolyBench": {
+      "items": 113,
+      "share": 0.0536,
+      "in_two_other_benchmarks": 0
+    },
+    "SWE-bench Multilingual": {
+      "items": 23,
+      "share": 0.0767,
+      "in_two_other_benchmarks": 0
+    },
+    "SWE-bench": {
+      "items": 0,
+      "share": 0.0,
+      "in_two_other_benchmarks": 0
+    },
+    "SWE-bench Pro": {
+      "items": 0,
+      "share": 0.0,
+      "in_two_other_benchmarks": 0
+    }
+  },
+  "renames_found_by_same_task_pairs": [],
+  "shared_repos": {
+    "Multi-SWE-bench x SWE-PolyBench": {
+      "count": 4,
+      "repos": [
+        "apache/dubbo",
+        "google/gson",
+        "mui/material-ui",
+        "sveltejs/svelte"
+      ]
+    },
+    "Multi-SWE-bench x SWE-bench Multilingual": {
+      "count": 10,
+      "repos": [
+        "axios/axios",
+        "burntsushi/ripgrep",
+        "fmtlib/fmt",
+        "google/gson",
+        "jqlang/jq",
+        "nlohmann/json",
+        "nushell/nushell",
+        "sharkdp/bat",
+        "tokio-rs/tokio",
+        "vuejs/core"
+      ]
+    },
+    "SWE-PolyBench x SWE-bench Multilingual": {
+      "count": 2,
+      "repos": [
+        "google/gson",
+        "mrdoob/three.js"
+      ]
+    }
+  },
+  "shared_repo_detail": {
+    "Multi-SWE-bench x SWE-PolyBench": {
+      "apache/dubbo": {
+        "Multi-SWE-bench": 3,
+        "SWE-PolyBench": 37,
+        "same_pr": 1
+      },
+      "google/gson": {
+        "Multi-SWE-bench": 5,
+        "SWE-PolyBench": 30,
+        "same_pr": 1
+      },
+      "mui/material-ui": {
+        "Multi-SWE-bench": 174,
+        "SWE-PolyBench": 488,
+        "same_pr": 107
+      },
+      "sveltejs/svelte": {
+        "Multi-SWE-bench": 272,
+        "SWE-PolyBench": 496,
+        "same_pr": 0
+      }
+    },
+    "Multi-SWE-bench x SWE-bench Multilingual": {
+      "axios/axios": {
+        "Multi-SWE-bench": 4,
+        "SWE-bench Multilingual": 6,
+        "same_pr": 1
+      },
+      "burntsushi/ripgrep": {
+        "Multi-SWE-bench": 14,
+        "SWE-bench Multilingual": 2,
+        "same_pr": 2
+      },
+      "fmtlib/fmt": {
+        "Multi-SWE-bench": 41,
+        "SWE-bench Multilingual": 11,
+        "same_pr": 8
+      },
+      "google/gson": {
+        "Multi-SWE-bench": 5,
+        "SWE-bench Multilingual": 9,
+        "same_pr": 1
+      },
+      "jqlang/jq": {
+        "Multi-SWE-bench": 17,
+        "SWE-bench Multilingual": 9,
+        "same_pr": 4
+      },
+      "nlohmann/json": {
+        "Multi-SWE-bench": 55,
+        "SWE-bench Multilingual": 1,
+        "same_pr": 0
+      },
+      "nushell/nushell": {
+        "Multi-SWE-bench": 14,
+        "SWE-bench Multilingual": 5,
+        "same_pr": 1
+      },
+      "sharkdp/bat": {
+        "Multi-SWE-bench": 10,
+        "SWE-bench Multilingual": 8,
+        "same_pr": 1
+      },
+      "tokio-rs/tokio": {
+        "Multi-SWE-bench": 25,
+        "SWE-bench Multilingual": 9,
+        "same_pr": 0
+      },
+      "vuejs/core": {
+        "Multi-SWE-bench": 48,
+        "SWE-bench Multilingual": 5,
+        "same_pr": 1
+      }
+    },
+    "SWE-PolyBench x SWE-bench Multilingual": {
+      "google/gson": {
+        "SWE-PolyBench": 30,
+        "SWE-bench Multilingual": 9,
+        "same_pr": 4
+      },
+      "mrdoob/three.js": {
+        "SWE-PolyBench": 18,
+        "SWE-bench Multilingual": 3,
+        "same_pr": 0
+      }
+    }
+  }
+}

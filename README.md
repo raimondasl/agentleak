@@ -7,6 +7,7 @@ Source-level overlap audits between open agentic training data and agentic bench
 | [1](#case-1-mimo-v26-rl-oss-cyber-vs-cybergym) | MiMo-V2.6-RL-oss cyber (training) vs CyberGym | 223 CyberGym tasks (278 MiMo tasks) | 139 of 223 | 0 of 278 |
 | [2](#case-2-sec-bench-vs-cybergym) | SEC-bench vs CyberGym (benchmark vs benchmark) | 35 SEC-bench instances (36 CyberGym tasks) | 3 of the 33 `oss` matches | 0 of 35 |
 | [3](#case-3-swe-rebench-v2-vs-multilingual-swe-benchmarks) | SWE-rebench-V2 (training) vs Multi-SWE-bench, SWE-PolyBench, SWE-bench Multilingual | 348 V2 tasks (+20 V2-PRs tasks) | 320 of 348 | 347 of 348 (V2-PRs: none of 20 pairs shares a 13-gram) |
+| [4](#case-4-the-swe-benchmarks-themselves) | Multi-SWE-bench, SWE-PolyBench, SWE-bench Multilingual, SWE-bench, SWE-bench Pro, with each other (benchmark vs benchmark) | 132 same-PR pairs: 128 Multi-SWE-bench, 113 SWE-PolyBench and 23 SWE-bench Multilingual tasks | 130 of 132 pairs | 130 of 132 pairs share a 13-gram |
 
 Against richer benchmark files the result can change. In case 2, a 13-gram filter against CyberGym's sanitizer reports flags 29 of 35, plus 40 of the other 265. In case 1, only 6 of 223 same-bug pairs share a 13-gram with CyberGym's report. Each section says what its finding does and does not show. None of them is a claim about any model's scores.
 
@@ -274,3 +275,64 @@ Outputs in `out/swerebench_v2/`:
 - `overlap_v2.csv`, `overlap_v2_prs.csv`: one row per benchmark/training pair, with the joins that matched, same base commit and same fix
 - `v2_not_in_benchmarks.txt`
 - `summary.json`: all counts, joins, same-task checks, per-repo overlap, repo presence, the inclusion test with per-repo counts and the PR-range variant, and the text check
+
+## Case 4: the SWE benchmarks themselves
+Case 3 matched a training set against three multilingual SWE benchmarks. Here the benchmarks are matched against each other, and against SWE-bench (test split, 2,294 tasks) and SWE-bench Pro (731 public tasks), with case 3's joins.
+
+As in case 2, this compares benchmarks, not training data with a benchmark. Benchmarks sharing tasks is not a defect. It does mean that results on the shared tasks are not independent evidence.
+
+A pair counts when both tasks are the same PR in the same repo, with repo names compared case-insensitively, at any base commit. SWE-bench Pro names its tasks by commit and has no PR numbers, so a pair with it would need the same base commit and an identical fix. Multi-SWE-bench's `python/` folder is a copy of SWE-bench Verified, as Multi-SWE-bench says, and is left out as in case 3.
+
+| Benchmark pair | Same PR | ... at the same base commit | ... at a different base commit | Share of each benchmark |
+|---|---|---|---|---|
+| Multi-SWE-bench (1,632) × SWE-PolyBench (2,110) | **109** | 109 | 0 | 6.7% / 5.2% |
+| Multi-SWE-bench × SWE-bench Multilingual (300) | **19** | 9 | 10 | 1.2% / 6.3% |
+| SWE-PolyBench × SWE-bench Multilingual | **4** | 2 | 2 | 0.2% / 1.3% |
+| Any of these × SWE-bench, SWE-bench Pro or the Multi-SWE-bench Kotlin extension | 0 | | | |
+
+**In total**, these tasks are the same PR as a task in at least one other of these benchmarks:
+- 128 of Multi-SWE-bench's 1,632 (7.8%);
+- 113 of SWE-PolyBench's 2,110 (5.4%);
+- 23 of SWE-bench Multilingual's 300 (7.7%).
+
+No task is in all three. SWE-bench and SWE-bench Pro share no repo with the other benchmarks, so their zero is structural.
+
+**Same task?** Every one of the 132 pairs has the same fix.
+- **Multi-SWE-bench × Multilingual:** all 19 pairs have identical git blobs on every file both patches touch.
+- **Pairs with SWE-PolyBench:** blobs cannot be compared, because 1,561 of PolyBench's 2,110 patches have no `index` lines. For its 113 pairs we compare the changed lines in each shared file instead, and all are identical.
+- **Different base commits:** 10 Multi-SWE-bench/Multilingual pairs and 2 PolyBench/Multilingual pairs use a different base commit for the same PR. All 12 have the same fix (10 by blobs, 2 by changed lines): same PR and same fix, at a different snapshot.
+- **Not counted:** 12 Multi-SWE-bench/PolyBench pairs and 3 Multi-SWE-bench/Multilingual pairs share a base commit but are different PRs. None of them has the same fix.
+
+**Where the overlap is.** It is concentrated in a few repos:
+- **Multi-SWE-bench/PolyBench:** 107 of the 109 are `mui/material-ui`, where Multi-SWE-bench has 174 tasks and PolyBench 488. The other 2 are `apache/dubbo` and `google/gson`. The two benchmarks also share `sveltejs/svelte`, with 272 and 496 tasks, but no PR in it.
+- **Multi-SWE-bench/Multilingual:** fmt 8, jq 4, ripgrep 2, and gson, axios, nushell, bat and vue 1 each.
+- **PolyBench/Multilingual:** all 4 are `google/gson`.
+- **SWE-PolyBench Verified:** holds 13 of the 109 and 3 of the 4.
+
+**Names.** An exact repo-name join finds 130 of the 132 pairs. The 2 it misses are `BurntSushi/ripgrep` PRs, which Multilingual stores in lowercase.
+
+**Would an n-gram text filter have caught it?** Mostly yes. Both benchmarks keep the original issue text, so 130 of the 132 pairs share a 13-gram:
+- Multi-SWE-bench/PolyBench: median longest shared run 211 words.
+- Multi-SWE-bench/Multilingual: median 112.
+- PolyBench/Multilingual: runs of 24, 173, 175 and 219 words.
+
+In the other 2 pairs (axios #5085 and nushell #12901), the two benchmarks attached different issues to the same PR. Their texts share at most 3 and 4 words in a row.
+
+### What this does and does not show
+- **Does:**
+  - 132 task pairs across three multilingual SWE benchmarks are the same PR with the same fix: identical git blobs for the 19 Multi-SWE-bench/Multilingual pairs, and identical changed lines in every shared file for the 113 pairs with SWE-PolyBench.
+  - Results on these tasks are not independent across the benchmarks. For example, a model's Multi-SWE-bench and SWE-PolyBench scores share 109 tasks, and an average over the two counts them twice.
+- **Does not:**
+  - Show how any of these benchmarks chose its tasks, or that one took tasks from another. There is no common pool of PRs to draw a chance baseline from, so we do not test whether the overlap is more than expected for benchmarks built from the same repos.
+  - Say anything about any model's scores.
+  - Cover every overlap. The same issue fixed in a different PR is not counted. SWE-bench Pro is matched only by base commit and fix.
+
+### Reproduce
+```
+uv run swe_benchmarks_overlap.py
+```
+It uses case 3's loaders and pinned revisions, and adds `SWE-bench/SWE-bench@c6fe717f` (test split, full rows) and `ScaleAI/SWE-bench_Pro@2d52cb3d` (default, hard and v1 configs, deduplicated by instance ID). Multi-SWE-bench is read from case 3's slim cache in `~/.cache/agentleak/`, which is built on the first run of either script.
+
+Outputs in `out/swe_benchmarks/`:
+- `overlap_pairs.csv`: one row per matched pair, with the joins that matched, the kind of match, same base commit, same fix (by blobs and by changed lines), the longest shared text run, and Verified-subset membership
+- `summary.json`: per benchmark pair, the counts, shares, fix and text checks and per-repo detail; also shared repos, tasks in any other benchmark, and patches without `index` lines
