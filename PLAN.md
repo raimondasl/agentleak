@@ -3,7 +3,8 @@
 **Status (2026-09-30):**
 - Case 1 (MiMo-V2.6-RL-oss cyber vs CyberGym) is done and published in this repo.
 - The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). A follow-up was posted on 2026-10-01 with the text-check result and a question about how some images were built. Neither has a reply yet. The dev.to and social drafts in `drafts/` (local only, gitignored) are not posted yet.
-- Case 2 (SEC-bench vs CyberGym, benchmark vs benchmark) is done: 33 of SEC-bench's 100 OSS-Fuzz instances are CyberGym bugs, but a plain ID join finds 3. See README.md.
+- Case 2 (SEC-bench vs CyberGym, benchmark vs benchmark) is done: 33 of SEC-bench's 100 OSS-Fuzz instances are CyberGym bugs, but a plain ID join finds 3. See README.md. A heads-up was posted to the SEC-bench maintainers on 2026-10-01 ([SEC-bench/SEC-bench#4](https://github.com/SEC-bench/SEC-bench/issues/4)).
+- Case 3 (SWE-rebench-V2 training set vs Multi-SWE-bench, SWE-PolyBench and SWE-bench Multilingual) is done: 348 V2 tasks are the same PR at the same base commit as a benchmark task: 4–11% of each benchmark, and 13% of the Kotlin set added to Multi-SWE-bench after V2's release. Text filters would catch V2's overlap but not V2-PRs'. See README.md.
 - Origin: idea I-20260929-02 in the private `ai-research` scouting repo.
 - Phase-2 scouting notes from 2026-09-30 (unverified, with pinned SHAs) are local only in `drafts/scouting_2026-09-30.md`.
 - Text check for case 1 is done and in README.md: a 13-gram filter flags 0 of the 278 overlapping MiMo tasks.
@@ -39,7 +40,8 @@ Case 1 is the template: one script per case, pinned revisions, outputs in `out/`
 
 - **Source-ID joins:**
   - Cyber: ~~SEC-bench vs CyberGym~~ done (case 2; also adds a same-fix join on patch blobs and a within-project chance baseline). Other ARVO/OSS-Fuzz-derived training sets vs CyberGym and SEC-bench. Check whether CyberFactory/OpenAegis data is available.
-  - SWE, at PR and commit level: SWE-smith, SWE-Gym, R2E-Gym, SWE-rebench train, MiMo `code`, UltraData-SFT-Agent and OpenThoughts-Agent vs SWE-bench Verified, Pro and Multi-SWE.
+  - SWE, at PR and commit level: ~~SWE-rebench-V2 vs Multi-SWE-bench, SWE-PolyBench, SWE-bench Multilingual~~ done (case 3). Remaining candidates (scouted, mostly clean or low value): LegoFlow-SWE vs SWE-bench Pro, Multi-SWE-RL vs Multi-SWE-bench (ktlint), MiMo `code`, UltraData-SFT-Agent, OpenThoughts-Agent.
+  - Possible follow-up for case 3, held: SWE-bench Multilingual PRs look under-included in V2 outside the 3 repos that hold all 12 V2 overlaps. Multilingual stores every repo name in lowercase; these 3 are among the 4 Multilingual repos in V2 whose GitHub names have capitals (the 4th, BurntSushi/ripgrep, has no overlap). This needs an unpinned GitHub candidate pool and was found post hoc, so it needs an independent check and preferably a question to the V2 authors first.
 - **Text check:** 13-gram overlap on each new pair, to measure what text filters catch vs miss. Done for case 1 (0 of 278 caught) and case 2 (0 of 35 against descriptions; 29 of 35 against same-project sanitizer reports, with extra flags).
 - **Open items from the case-1 review:**
   - 223 is a lower bound. A reviewer found about 19 more CyberGym tasks sharing an exact ClusterFuzz crash signature with a MiMo bug under a different issue ID. Verify these.

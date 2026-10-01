@@ -1,0 +1,384 @@
+{
+  "sources": {
+    "swe_rebench_v2": "nebius/SWE-rebench-V2@475dd5e8703bb5fb22dd3c60b5d038b019eba1e0",
+    "swe_rebench_v2_prs": "nebius/SWE-rebench-V2-PRs@fbf0ecf50f268d5344149e2f0097db6bede83737",
+    "multi_swe_bench": "ByteDance-Seed/Multi-SWE-bench@56ff018c04a38e27ada1e9d0a6d5839a51f88f0d",
+    "multi_swe_bench_discarded": "ByteDance-Seed/Multi-SWE-RL@9777648932daa214ba18c70c81e85821b5836f32",
+    "swe_polybench": "AmazonScience/SWE-PolyBench@d56445f9940eae4e9d2974ec66820c2f1d7754e6",
+    "swe_polybench_verified": "AmazonScience/SWE-PolyBench_Verified@b3fca77b637379f0c01ad86d18753a7ac1998b53",
+    "swe_bench_multilingual": "SWE-bench/SWE-bench_Multilingual@846e647b9f33c0b51b739d005d13d85493c9af09",
+    "swe_bench": "SWE-bench/SWE-bench@c6fe717fd7a4c3ac1daa4055a4fd082c6a1d28a2",
+    "swe_bench_verified": "SWE-bench/SWE-bench_Verified@78f471bf655a3137b2e8a75af1501690ec009ec3",
+    "swe_bench_pro": "ScaleAI/SWE-bench_Pro@2d52cb3df914a3fcf80c7f66738b3a88ae37fc50"
+  },
+  "counts": {
+    "v2_rows": 32079,
+    "v2_distinct_instance_ids": 32079,
+    "v2_prs_rows": 126300,
+    "v2_prs_distinct_instance_ids": 122910,
+    "v2_languages": 20,
+    "multi_swe_bench_languages": 7,
+    "benchmark_items": {
+      "Multi-SWE-bench": 1632,
+      "Multi-SWE-bench (Kotlin extension)": 105,
+      "SWE-PolyBench": 2110,
+      "SWE-bench Multilingual": 300
+    },
+    "polybench_verified_items": 382
+  },
+  "joins_v2": {
+    "Multi-SWE-bench": {
+      "benchmark_items": 1632,
+      "exact_repo": 82,
+      "case_insensitive_repo": 82,
+      "base_commit_and_pr": 83,
+      "share_by_base_commit_and_pr": 0.051
+    },
+    "Multi-SWE-bench (Kotlin extension)": {
+      "benchmark_items": 105,
+      "exact_repo": 14,
+      "case_insensitive_repo": 14,
+      "base_commit_and_pr": 14,
+      "share_by_base_commit_and_pr": 0.133
+    },
+    "SWE-PolyBench": {
+      "benchmark_items": 2110,
+      "exact_repo": 224,
+      "case_insensitive_repo": 224,
+      "base_commit_and_pr": 239,
+      "share_by_base_commit_and_pr": 0.113
+    },
+    "SWE-bench Multilingual": {
+      "benchmark_items": 300,
+      "exact_repo": 0,
+      "case_insensitive_repo": 12,
+      "base_commit_and_pr": 12,
+      "share_by_base_commit_and_pr": 0.04
+    },
+    "SWE-PolyBench Verified (subset)": {
+      "benchmark_items": 382,
+      "exact_repo": 37,
+      "case_insensitive_repo": 37,
+      "base_commit_and_pr": 41,
+      "share_by_base_commit_and_pr": 0.107
+    }
+  },
+  "joins_v2_prs": {
+    "Multi-SWE-bench": {
+      "benchmark_items": 1632,
+      "exact_repo": 3,
+      "case_insensitive_repo": 3,
+      "base_commit_and_pr": 3,
+      "share_by_base_commit_and_pr": 0.002
+    },
+    "Multi-SWE-bench (Kotlin extension)": {
+      "benchmark_items": 105,
+      "exact_repo": 0,
+      "case_insensitive_repo": 0,
+      "base_commit_and_pr": 0,
+      "share_by_base_commit_and_pr": 0.0
+    },
+    "SWE-PolyBench": {
+      "benchmark_items": 2110,
+      "exact_repo": 6,
+      "case_insensitive_repo": 6,
+      "base_commit_and_pr": 6,
+      "share_by_base_commit_and_pr": 0.003
+    },
+    "SWE-bench Multilingual": {
+      "benchmark_items": 300,
+      "exact_repo": 11,
+      "case_insensitive_repo": 11,
+      "base_commit_and_pr": 6,
+      "share_by_base_commit_and_pr": 0.02
+    }
+  },
+  "overlap_v2": {
+    "distinct_v2_instances": 348,
+    "repo_renames_found_by_base_commit": {
+      "kbknapp/clap-rs": "clap-rs/clap",
+      "jlongster/prettier": "prettier/prettier"
+    }
+  },
+  "same_task_v2": {
+    "pairs": 348,
+    "same_base": 348,
+    "fix_by_blobs_of_shared_files": {
+      "identical": 307,
+      "different": 10,
+      "partly_identical": 9,
+      "not_comparable": 22
+    },
+    "identical_and_same_file_set": 253,
+    "fix_not_comparable_because_benchmark_patch_has_no_index_lines": 22
+  },
+  "same_task_v2_prs": {
+    "pairs": 20,
+    "same_base": 15,
+    "fix_by_blobs_of_shared_files": {
+      "identical": 18,
+      "not_comparable": 1,
+      "different": 1
+    },
+    "identical_and_same_file_set": 16,
+    "fix_not_comparable_because_benchmark_patch_has_no_index_lines": 1
+  },
+  "polybench_overlap_by_repo": {
+    "serverless/serverless": 202,
+    "keras-team/keras": 21,
+    "prettier/prettier": 15,
+    "huggingface/transformers": 1
+  },
+  "multilingual_overlap_by_repo": {
+    "v2": {
+      "briannesbitt/carbon": 6,
+      "php-cs-fixer/php-cs-fixer": 3,
+      "phpoffice/phpspreadsheet": 3
+    },
+    "v2_prs": {
+      "axios/axios": 1,
+      "gin-gonic/gin": 3,
+      "projectlombok/lombok": 1,
+      "redis/redis": 2,
+      "sharkdp/bat": 1,
+      "tokio-rs/tokio": 3
+    }
+  },
+  "repo_presence_in_v2": {
+    "Multi-SWE-bench": {
+      "repos": 39,
+      "in_v2": 16
+    },
+    "Multi-SWE-bench (Kotlin extension)": {
+      "repos": 8,
+      "in_v2": 2
+    },
+    "SWE-PolyBench": {
+      "repos": 21,
+      "in_v2": 6
+    },
+    "SWE-bench Multilingual": {
+      "repos": 41,
+      "in_v2": 15
+    },
+    "SWE-bench (test)": {
+      "repos": 12,
+      "in_v2": 0
+    },
+    "SWE-bench Verified": {
+      "repos": 12,
+      "in_v2": 0
+    },
+    "SWE-bench (dev, not a test set)": {
+      "repos": 6,
+      "in_v2": 3
+    },
+    "SWE-bench Pro (all public configs)": {
+      "repos": 11,
+      "in_v2": 0
+    }
+  },
+  "msb_inclusion_vs_discarded": {
+    "strata": 16,
+    "expected": 77.4,
+    "sd": 4.1,
+    "observed": 83,
+    "z": 1.36,
+    "p_le_observed": 0.9329,
+    "p_ge_observed": 0.1058,
+    "discarded_list_size": 830,
+    "within_v2_pr_range": {
+      "strata": 12,
+      "expected": 80.3,
+      "sd": 3.7,
+      "observed": 83,
+      "z": 0.74,
+      "p_le_observed": 0.8084,
+      "p_ge_observed": 0.2749
+    },
+    "per_repo": {
+      "alibaba/fastjson2": {
+        "benchmark": 6,
+        "benchmark_in_v2": 0,
+        "discarded": 5,
+        "discarded_in_v2": 0
+      },
+      "anuraghazra/github-readme-stats": {
+        "benchmark": 19,
+        "benchmark_in_v2": 2,
+        "discarded": 8,
+        "discarded_in_v2": 0
+      },
+      "axios/axios": {
+        "benchmark": 4,
+        "benchmark_in_v2": 2,
+        "discarded": 6,
+        "discarded_in_v2": 3
+      },
+      "burntsushi/ripgrep": {
+        "benchmark": 14,
+        "benchmark_in_v2": 2,
+        "discarded": 6,
+        "discarded_in_v2": 1
+      },
+      "clap-rs/clap": {
+        "benchmark": 132,
+        "benchmark_in_v2": 39,
+        "discarded": 57,
+        "discarded_in_v2": 15
+      },
+      "cli/cli": {
+        "benchmark": 397,
+        "benchmark_in_v2": 8,
+        "discarded": 107,
+        "discarded_in_v2": 2
+      },
+      "darkreader/darkreader": {
+        "benchmark": 2,
+        "benchmark_in_v2": 0,
+        "discarded": 5,
+        "discarded_in_v2": 0
+      },
+      "etcd-io/etcd": {
+        "benchmark": 0,
+        "benchmark_in_v2": 0,
+        "discarded": 1,
+        "discarded_in_v2": 0
+      },
+      "facebook/zstd": {
+        "benchmark": 29,
+        "benchmark_in_v2": 3,
+        "discarded": 9,
+        "discarded_in_v2": 0
+      },
+      "gin-gonic/gin": {
+        "benchmark": 0,
+        "benchmark_in_v2": 0,
+        "discarded": 26,
+        "discarded_in_v2": 6
+      },
+      "go-gorm/gorm": {
+        "benchmark": 0,
+        "benchmark_in_v2": 0,
+        "discarded": 6,
+        "discarded_in_v2": 0
+      },
+      "grpc/grpc-go": {
+        "benchmark": 16,
+        "benchmark_in_v2": 0,
+        "discarded": 0,
+        "discarded_in_v2": 0
+      },
+      "iamkun/dayjs": {
+        "benchmark": 56,
+        "benchmark_in_v2": 4,
+        "discarded": 8,
+        "discarded_in_v2": 0
+      },
+      "rayon-rs/rayon": {
+        "benchmark": 2,
+        "benchmark_in_v2": 1,
+        "discarded": 0,
+        "discarded_in_v2": 0
+      },
+      "redis/redis": {
+        "benchmark": 0,
+        "benchmark_in_v2": 0,
+        "discarded": 9,
+        "discarded_in_v2": 5
+      },
+      "sharkdp/bat": {
+        "benchmark": 10,
+        "benchmark_in_v2": 2,
+        "discarded": 9,
+        "discarded_in_v2": 1
+      },
+      "sharkdp/fd": {
+        "benchmark": 14,
+        "benchmark_in_v2": 10,
+        "discarded": 8,
+        "discarded_in_v2": 4
+      },
+      "simdjson/simdjson": {
+        "benchmark": 20,
+        "benchmark_in_v2": 1,
+        "discarded": 2,
+        "discarded_in_v2": 0
+      },
+      "tokio-rs/bytes": {
+        "benchmark": 5,
+        "benchmark_in_v2": 0,
+        "discarded": 5,
+        "discarded_in_v2": 2
+      },
+      "valkey-io/valkey": {
+        "benchmark": 0,
+        "benchmark_in_v2": 0,
+        "discarded": 10,
+        "discarded_in_v2": 2
+      },
+      "zeromicro/go-zero": {
+        "benchmark": 15,
+        "benchmark_in_v2": 9,
+        "discarded": 21,
+        "discarded_in_v2": 8
+      }
+    },
+    "note": "pool = Multi-SWE-bench PRs + PRs its pipeline discarded, in repos also in V2; no date window"
+  },
+  "text_check": {
+    "benchmark_text": "Multi-SWE-bench: resolved issues (title + body); PolyBench and Multilingual: problem_statement",
+    "training_text": "problem_statement",
+    "v2_filter_13gram": {
+      "overlap_flagged": 347,
+      "overlap_flagged_by_own_benchmark_item": 347,
+      "overlap": 348,
+      "other_flagged": 1249,
+      "other": 31731
+    },
+    "v2_filter_8gram": {
+      "overlap_flagged": 347,
+      "overlap_flagged_by_own_benchmark_item": 347,
+      "overlap": 348,
+      "other_flagged": 4418,
+      "other": 31731
+    },
+    "v2_pairs_longest_shared_run": {
+      "pairs": 348,
+      "max": 1960,
+      "median": 194.5,
+      "pairs_ge_13": 347,
+      "pairs_ge_8": 347
+    },
+    "v2_prs_pairs_longest_shared_run": {
+      "pairs": 20,
+      "max": 6,
+      "median": 2.0,
+      "pairs_ge_13": 0,
+      "pairs_ge_8": 0
+    },
+    "same_issue_text_different_pr": [
+      {
+        "v2": "briannesbitt__carbon-2667",
+        "benchmark": "briannesbitt__carbon-2665",
+        "benchmark_name": "SWE-bench Multilingual",
+        "words": 222,
+        "benchmark_task_also_in_v2_by_pr": true
+      },
+      {
+        "v2": "zeromicro__go-zero-2041",
+        "benchmark": "zeromicro__go-zero-2032",
+        "benchmark_name": "Multi-SWE-bench",
+        "words": 139,
+        "benchmark_task_also_in_v2_by_pr": false
+      },
+      {
+        "v2": "valkey-io__valkey-809",
+        "benchmark": "valkey-io__valkey-790",
+        "benchmark_name": "SWE-bench Multilingual",
+        "words": 447,
+        "benchmark_task_also_in_v2_by_pr": false
+      }
+    ]
+  }
+}

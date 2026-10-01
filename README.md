@@ -158,3 +158,111 @@ Outputs in `out/secbench_cybergym/`:
 - `overlap.csv`: one row per SEC-bench/CyberGym pair, with ID match (plain or translated), same fix and crash check
 - `secbench_not_in_cybergym.txt`
 - `summary.json`: all counts, both chance baselines with per-project counts, the crash check and its control, and both text checks with threshold sensitivity
+
+## Case 3: SWE-rebench-V2 vs multilingual SWE benchmarks
+
+[SWE-rebench-V2](https://huggingface.co/datasets/nebius/SWE-rebench-V2) is an open training set of 32,079 software-engineering tasks built from GitHub pull requests in 20 languages. It was released in early 2026 for agent training, mainly RL. Its companion [SWE-rebench-V2-PRs](https://huggingface.co/datasets/nebius/SWE-rebench-V2-PRs) (126,300 rows) adds PRs that V2's pipeline did not link to an issue; for these, an LLM writes the problem statement from the PR ([paper](https://arxiv.org/abs/2602.23866), §3.6).
+
+We compare both with three multilingual benchmarks built from the same kind of source, GitHub PRs that resolve an issue and come with tests that fail before the fix and pass after:
+- **Multi-SWE-bench:** 1,632 tasks in 7 languages. A further 105 Kotlin tasks were contributed to its dataset repo in July 2026, after V2's release; below they are the "Kotlin extension".
+- **SWE-PolyBench:** 2,110 tasks, with a 382-task Verified subset.
+- **SWE-bench Multilingual:** 300 tasks.
+
+A task is a PR in a repo at a base commit, so we match on the PR itself.
+
+| Benchmark (tasks) | Shared with V2: exact repo + PR | case-insensitive repo + PR | base commit + PR | Share |
+|---|---|---|---|---|
+| Multi-SWE-bench (1,632) | 82 | 82 | **83** | 5.1% |
+| Multi-SWE-bench, Kotlin extension (105) | 14 | 14 | **14** | 13.3% |
+| SWE-PolyBench (2,110) | 224 | 224 | **239** | 11.3% |
+| ... Verified subset (382) | 37 | 37 | **41** | 10.7% |
+| SWE-bench Multilingual (300) | 0 | 12 | **12** | 4.0% |
+
+**Names.** Repo names are not stable keys.
+- **Letter case:** SWE-bench Multilingual stores every repo name in lowercase. All 12 of its overlaps are in 3 repos whose GitHub names have capitals (`briannesbitt/Carbon`, `PHP-CS-Fixer/PHP-CS-Fixer`, `PHPOffice/PhpSpreadsheet`), so an exact join finds none of them.
+- **Renames:** V2 lists one matching clap PR under the old name `kbknapp/clap-rs`, and its prettier PRs under `jlongster/prettier`.
+- **The fix:** the (base commit, PR) key needs no names and finds all of these.
+
+In total, 348 of V2's 32,079 tasks (1.1%) match a benchmark task.
+
+**Same task?** The name joins find no pair with a different base commit. Comparing fix patches by git blobs, as in case 2:
+- 307 have the same blobs on every file both patches touch. 253 of them touch exactly the same files; in most of the rest, V2's diff also touches extra files.
+- 9 are partly identical.
+- 10 differ in every shared file despite the same PR and base commit; we did not check why.
+- 22 cannot be compared, because those SWE-PolyBench patches have no blob hashes.
+
+**Where the overlap is.** It is concentrated in a few repos:
+- **SWE-PolyBench:** 202 of the 239 are `serverless/serverless`; keras has 21, prettier 15, transformers 1.
+- **SWE-bench Multilingual:** all 12 are in three PHP repos: Carbon 6, PHP-CS-Fixer 3, PhpSpreadsheet 3.
+
+**Were benchmark PRs filtered out?** For Multi-SWE-bench there is a reference set: its authors published 830 PRs that their pipeline collected and then removed (in Multi-SWE-RL). If V2 did not filter benchmark PRs, then within each repo that V2 shares with Multi-SWE-bench, benchmark PRs should be in V2 at about the same rate as removed ones.
+- **Result:** 83 are in V2, against 77.4 expected (sd 4.1; z = 1.4; one-sided p = 0.93 for a shortfall). So we see no sign that V2 filtered Multi-SWE-bench PRs.
+- **Dates:** the test ignores PR dates. Restricting each repo to the PR range V2 covers gives the same answer: 80.3 expected, z = 0.7, p = 0.81.
+- **Power:** it has little power, because most PRs in these repos are benchmark PRs, so it would only detect heavy filtering.
+- **A possible bias:** the removed PRs were discarded by Multi-SWE-bench's pipeline. V2's own quality filters may drop them more often, which could hide mild filtering.
+- **Other benchmarks:** there is no comparable reference set for SWE-PolyBench or SWE-bench Multilingual, so we do not test those.
+
+**Which benchmark repos are in V2 at all?** Repos are matched case-insensitively, with the two renames above.
+
+| Benchmark | Repos | Also in V2 |
+|---|---|---|
+| SWE-bench (test) | 12 | 0 |
+| SWE-bench Verified | 12 | 0 |
+| SWE-bench Pro (public) | 11 | 0 |
+| SWE-bench (dev split, not a test set) | 6 | 3 |
+| Multi-SWE-bench | 39 | 16 |
+| Multi-SWE-bench, Kotlin extension | 8 | 2 |
+| SWE-PolyBench | 21 | 6 |
+| SWE-bench Multilingual | 41 | 15 |
+
+None of the 12 SWE-bench test repos (the same 12 as in Verified) is in V2. By contrast, each multilingual benchmark, including the Kotlin extension, shares a quarter or more of its repos with V2. V2's paper and dataset card do not say why. Some absences have likely reasons:
+- **pylint:** V2's paper says it keeps only repos with permissive licenses, and pylint is GPL-2.0.
+- **django:** V2 needs a linked GitHub issue, and django has GitHub issues disabled.
+- **SWE-bench Pro:** the same license rule may explain why none of its public repos, which are GPL or AGPL, is in V2.
+
+We found no such reason for the other 10 SWE-bench repos. V2's authors do not say whether they excluded them, and we have not tested whether their absence could be chance.
+
+**Would an n-gram text filter have caught it?** For V2, yes. V2 keeps each PR's original issue text, so 347 of the 348 overlapping tasks share a 13-gram with their own benchmark task (median longest shared run: 194.5 words). The last one has identical but very short text.
+- The same filter also flags 1,249 of the other 31,731 V2 tasks (benchmark text includes the Kotlin extension). We did not classify these; a shared 13-gram alone does not make a task an overlap.
+- 3 of them have word-for-word the same issue text as a benchmark task, but a different PR:
+  - `valkey-io/valkey` #809 (SWE-bench Multilingual: #790);
+  - `zeromicro/go-zero` #2041 (Multi-SWE-bench: #2032);
+  - `briannesbitt/Carbon` #2667 (Multilingual: #2665, which is already among the 348).
+
+For V2-PRs, whose problem statements are written by an LLM, no. None of its 20 overlapping PRs shares even an 8-gram with the benchmark text; the longest shared run is 6 words.
+
+### What this does and does not show
+- **Does:**
+  - 348 SWE-rebench-V2 tasks are the same PR at the same base commit as a benchmark task.
+  - A model trained on V2 and then evaluated on one of these benchmarks is partly evaluated on its own training tasks: 4.0% of SWE-bench Multilingual, 5.1% of Multi-SWE-bench and 11.3% of SWE-PolyBench (10.7% of its Verified subset). It is 13.3% of the Kotlin extension.
+  - V2-PRs adds a few more by repo and PR: Multi-SWE-bench 3, SWE-PolyBench 6, SWE-bench Multilingual 11. 6 of the 11 Multilingual ones have the same base commit.
+- **Does not:**
+  - Show that V2's builders chose benchmark PRs or broke a rule they stated. V2 does not claim to exclude these benchmarks, and Multi-SWE-bench PRs are in V2 at about the rate of the PRs Multi-SWE-bench's pipeline removed.
+  - Mean that V2's builders could have avoided the Kotlin overlap. Those tasks were added to Multi-SWE-bench after V2 was released.
+  - Say anything about any model's scores.
+  - Cover every overlap.
+    - Only PR-level matches are counted. The same issue fixed in a different PR is not counted; the text check found 3 such V2 tasks.
+    - Repo presence uses names, and renames are resolved only where a PR match reveals them.
+- **Unlike cases 1 and 2:** a 13-gram filter on the problem statements would catch V2's overlap. It would not catch V2-PRs', whose statements are rewritten.
+
+### Filtered list
+`out/swerebench_v2/v2_not_in_benchmarks.txt` lists the **31,731** V2 tasks that no join matched to these benchmarks. It removes only PR-level matches with these benchmarks at the pinned revisions. It is not a general decontamination, and there is no such list for V2-PRs.
+
+### Reproduce
+```
+uv run swerebench_v2.py
+```
+The script downloads V2's parquet file (430 MB) and reads only the key columns of V2-PRs (2.7 GB). It streams Multi-SWE-bench's 1.8 GB of JSONL once and caches a slim copy in `~/.cache/agentleak/`.
+
+Pinned sources:
+- `nebius/SWE-rebench-V2@475dd5e8`, `nebius/SWE-rebench-V2-PRs@fbf0ecf5`
+- `ByteDance-Seed/Multi-SWE-bench@56ff018c` (the `kotlin/` folder is the Kotlin extension; `python/` is a copy of SWE-bench Verified and is left out)
+- `ByteDance-Seed/Multi-SWE-RL@97776489`: Multi-SWE-bench's removed PRs
+- `AmazonScience/SWE-PolyBench@d56445f9`, `AmazonScience/SWE-PolyBench_Verified@b3fca77b`
+- `SWE-bench/SWE-bench_Multilingual@846e647b`
+- `SWE-bench/SWE-bench@c6fe717f`, `SWE-bench/SWE-bench_Verified@78f471bf`, `ScaleAI/SWE-bench_Pro@2d52cb3d`: repo names only
+
+Outputs in `out/swerebench_v2/`:
+- `overlap_v2.csv`, `overlap_v2_prs.csv`: one row per benchmark/training pair, with the joins that matched, same base commit and same fix
+- `v2_not_in_benchmarks.txt`
+- `summary.json`: all counts, joins, same-task checks, per-repo overlap, repo presence, the inclusion test with per-repo counts and the PR-range variant, and the text check

@@ -1,0 +1,21 @@
+benchmark,benchmark_instance_id,in_polybench_verified,training_instance_id,benchmark_repo,training_repo,pr,joins,same_base,same_fix
+SWE-bench Multilingual,axios__axios-5892,False,axios__axios-5892,axios/axios,axios/axios,5892,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+Multi-SWE-bench,clap-rs__clap-4151,False,clap-rs__clap-4151,clap-rs/clap,clap-rs/clap,4151,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+Multi-SWE-bench,cli__cli-7768,False,cli__cli-7768,cli/cli,cli/cli,7768,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+Multi-SWE-bench,cli__cli-8459,False,cli__cli-8459,cli/cli,cli/cli,8459,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-bench Multilingual,gin-gonic__gin-1957,False,gin-gonic__gin-1957,gin-gonic/gin,gin-gonic/gin,1957,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-bench Multilingual,gin-gonic__gin-2755,False,gin-gonic__gin-2755,gin-gonic/gin,gin-gonic/gin,2755,case_insensitive_repo;exact_repo,False,different
+SWE-bench Multilingual,gin-gonic__gin-3820,False,gin-gonic__gin-3820,gin-gonic/gin,gin-gonic/gin,3820,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-bench Multilingual,projectlombok__lombok-3674,False,projectlombok__lombok-3674,projectlombok/lombok,projectlombok/lombok,3674,case_insensitive_repo;exact_repo,False,identical
+SWE-bench Multilingual,redis__redis-11510,False,redis__redis-11510,redis/redis,redis/redis,11510,case_insensitive_repo;exact_repo,False,identical
+SWE-bench Multilingual,redis__redis-12472,False,redis__redis-12472,redis/redis,redis/redis,12472,case_insensitive_repo;exact_repo,False,identical
+SWE-PolyBench,serverless__serverless-2714,False,serverless__serverless-2714,serverless/serverless,serverless/serverless,2714,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-PolyBench,serverless__serverless-6960,False,serverless__serverless-6960,serverless/serverless,serverless/serverless,6960,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-PolyBench,serverless__serverless-7067,False,serverless__serverless-7067,serverless/serverless,serverless/serverless,7067,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-PolyBench,serverless__serverless-7265,False,serverless__serverless-7265,serverless/serverless,serverless/serverless,7265,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-PolyBench,serverless__serverless-7757,False,serverless__serverless-7757,serverless/serverless,serverless/serverless,7757,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-bench Multilingual,sharkdp__bat-2835,False,sharkdp__bat-2835,sharkdp/bat,sharkdp/bat,2835,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-bench Multilingual,tokio-rs__tokio-4384,False,tokio-rs__tokio-4384,tokio-rs/tokio,tokio-rs/tokio,4384,case_insensitive_repo;exact_repo,False,identical
+SWE-bench Multilingual,tokio-rs__tokio-6838,False,tokio-rs__tokio-6838,tokio-rs/tokio,tokio-rs/tokio,6838,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-bench Multilingual,tokio-rs__tokio-7139,False,tokio-rs__tokio-7139,tokio-rs/tokio,tokio-rs/tokio,7139,base_commit_and_pr;case_insensitive_repo;exact_repo,True,identical
+SWE-PolyBench,yt-dlp__yt-dlp-10390,True,yt-dlp__yt-dlp-10390,yt-dlp/yt-dlp,yt-dlp/yt-dlp,10390,base_commit_and_pr;case_insensitive_repo;exact_repo,True,not_comparable
