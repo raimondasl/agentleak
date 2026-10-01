@@ -147,5 +147,48 @@
       "names_fuzzer_entry_point": 5,
       "function_and_type_rate": 0.077
     }
+  },
+  "text_check": {
+    "benchmark_text": "CyberGym vulnerability_description (level-1 task text)",
+    "training_text": "MiMo problem_statement (full task prompt)",
+    "tokenization": "lowercase \\w+ words",
+    "filter_view": {
+      "13": {
+        "overlap_tasks_flagged": 0,
+        "overlap_tasks_flagged_by_own_cybergym_task": 0,
+        "overlap_tasks": 278,
+        "other_tasks_flagged": 0,
+        "other_tasks": 722,
+        "cybergym_tasks_matched": []
+      },
+      "8": {
+        "overlap_tasks_flagged": 1,
+        "overlap_tasks_flagged_by_own_cybergym_task": 0,
+        "overlap_tasks": 278,
+        "other_tasks_flagged": 9,
+        "other_tasks": 722,
+        "cybergym_tasks_matched": [
+          "arvo:58770"
+        ]
+      }
+    },
+    "pair_view": {
+      "pairs": 223,
+      "cybergym_descriptions_shorter_than_13_words": 32,
+      "description_names_mimo_target_function": 61,
+      "pairs_with_a_mimo_target_function": 219,
+      "longest_shared_run_vs_description": {
+        "max": 5,
+        "median": 2,
+        "pairs_ge_13": 0,
+        "pairs_ge_8": 0
+      },
+      "longest_shared_run_vs_error_txt": {
+        "max": 48,
+        "median": 5,
+        "pairs_ge_13": 6,
+        "pairs_ge_8": 19
+      }
+    }
   }
 }

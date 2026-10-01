@@ -63,7 +63,8 @@ def load_mimo():
         spec = r["prompt"][0]["content"] if r["prompt"] else ""
         m = re.search(r"in function `([^`]*)` in file `([^`]*)`", spec)
         t = re.search(r"Sanitizer: (.+?) in function", spec)
-        tasks.append({"instance_id": iid, "num": trailing_int(iid), "spec": spec,
+        text = json.loads(r["extra_info"]["instance_json"]).get("problem_statement") or spec
+        tasks.append({"instance_id": iid, "num": trailing_int(iid), "spec": spec, "text": text,
                       "type": t.group(1).strip() if t else "",
                       "function": m.group(1) if m else "", "file": m.group(2) if m else ""})
     return tasks
@@ -71,7 +72,8 @@ def load_mimo():
 
 def load_cybergym(rev: str):
     ds = load_dataset(CYBERGYM_REPO, split="tasks", revision=rev)
-    return [{"task_id": r["task_id"], "num": trailing_int(r["task_id"]), "project": r["project_name"]} for r in ds]
+    return [{"task_id": r["task_id"], "num": trailing_int(r["task_id"]), "project": r["project_name"],
+             "description": r["vulnerability_description"]} for r in ds]
 
 
 def load_mapping() -> dict:
@@ -89,6 +91,46 @@ def load_v1_pool() -> set:
 
 
 HARNESS_FUNCS = {"LLVMFuzzerInitialize", "LLVMFuzzerTestOneInput"}
+
+# Text check: the word n-gram test used by common decontamination filters (lowercased \w+ words).
+NGRAM_SIZES = (13, 8)
+
+
+def words(s: str) -> list:
+    return re.findall(r"\w+", s.lower())
+
+
+def ngrams(ws: list, n: int) -> set:
+    return {tuple(ws[i:i + n]) for i in range(len(ws) - n + 1)}
+
+
+def drop_bracketed(s: str, open_: str, close: str) -> str:
+    out, depth = [], 0
+    for ch in s:
+        if ch == open_:
+            depth += 1
+        elif ch == close and depth:
+            depth -= 1
+        elif not depth:
+            out.append(ch)
+    return "".join(out)
+
+
+def bare_function_name(f: str) -> str:
+    """'void ns::Cls::method<ns::T>(int) const' -> 'method'. Template arguments and argument lists are dropped
+    first; a lambda or operator() resolves to its enclosing function."""
+    tokens = drop_bracketed(drop_bracketed(f, "<", ">"), "(", ")").replace(" const", "").split()
+    parts = [p for p in (tokens[-1].split("::") if tokens else [])
+             if p and "lambda" not in p and not p.startswith(("operator", "'", "{"))]
+    return parts[-1] if parts else ""
+
+
+def longest_common_run(a: list, b: list) -> int:
+    """Length of the longest run of consecutive words that appears in both texts."""
+    n = 0
+    while ngrams(a, n + 1) & ngrams(b, n + 1):
+        n += 1
+    return n
 
 
 def crash_type(error_txt: str) -> str:
@@ -158,7 +200,7 @@ def main():
     #    the ID mapping; here we check MiMo's spec against CyberGym's ground-truth sanitizer report.
     #    Control: MiMo specs of *other* overlapping bugs from the same project, to see how often
     #    the check passes by accident.
-    sig = None
+    sig, error_txt = None, {}
     if args.signatures:
         reports = {}
         for b in shared:
@@ -166,6 +208,7 @@ def main():
             txt = Path(hf_hub_download(CYBERGYM_REPO, f"data/{kind}/{n}/error.txt",
                                        repo_type="dataset", revision=cg_rev)).read_text(errors="replace")
             reports[b] = (first_stack(txt), crash_type(txt))
+            error_txt[b] = txt
 
         def grade(b, m):
             frames, cg_type = reports[b]
@@ -194,7 +237,61 @@ def main():
                "control_same_project_other_bug": {"pairs": len(control), **dict(cc),
                                                   "function_and_type_rate": round(cc["function_and_type"] / max(len(control), 1), 3)}}
 
-    # 5. Filtered split: drop bugs that are in CyberGym, keep one task per remaining bug (preferring a
+    # 5. Would a text-based decontamination filter have caught the overlap? Compare MiMo task text with
+    #    CyberGym's level-1 task text (vulnerability_description) by word n-grams, as common filters do.
+    #    (a) Filter view: a MiMo task is flagged if it shares any n-gram with any CyberGym description.
+    #    (b) Pair view: longest run of shared words between each overlapping bug's CyberGym description and
+    #        its MiMo task text; with --signatures also against CyberGym's sanitizer report (error.txt).
+    cg_words = {t["task_id"]: words(t["description"]) for t in cg}
+    mimo_words = {t["instance_id"]: words(t["text"]) for t in mimo}
+    overlap_ids = {t["instance_id"] for t in mimo_hit}
+    flagged = {}
+    for n in NGRAM_SIZES:
+        gram_to_cg = defaultdict(set)
+        for tid, ws in cg_words.items():
+            for g in ngrams(ws, n):
+                gram_to_cg[g].add(tid)
+        matches = {t["instance_id"]: set().union(*(gram_to_cg.get(g, set()) for g in ngrams(mimo_words[t["instance_id"]], n)))
+                   for t in mimo}
+        hit = {i for i, m in matches.items() if m}
+        own = {t["instance_id"] for t in mimo_hit
+               if matches[t["instance_id"]] & {c["task_id"] for c in cg_by_bug[canon(t["num"])]}}
+        flagged[n] = {"overlap_tasks_flagged": len(hit & overlap_ids), "overlap_tasks_flagged_by_own_cybergym_task": len(own),
+                      "overlap_tasks": len(overlap_ids),
+                      "other_tasks_flagged": len(hit - overlap_ids), "other_tasks": len(mimo) - len(overlap_ids),
+                      "cybergym_tasks_matched": sorted(set().union(*matches.values()))}
+    pair_rows = []
+    for b in shared:
+        c = cg_by_bug[b][0]
+        run_desc = max(longest_common_run(mimo_words[m["instance_id"]], cg_words[c["task_id"]]) for m in mimo_by_bug[b])
+        run_err = (max(longest_common_run(mimo_words[m["instance_id"]], words(error_txt[b])) for m in mimo_by_bug[b])
+                   if b in error_txt else None)
+        names = {bare_function_name(m["function"]) for m in mimo_by_bug[b] if m["function"] not in HARNESS_FUNCS} - {""}
+        names_fn = (any(re.search(rf"\b{re.escape(n)}\b", c["description"]) for n in names) if names else None)
+        pair_rows.append({"canonical_bug_id": b, "cybergym_task_id": c["task_id"],
+                          "cybergym_description_words": len(cg_words[c["task_id"]]),
+                          "longest_shared_run_vs_description": run_desc, "longest_shared_run_vs_error_txt": run_err,
+                          "description_names_mimo_target_function": names_fn})
+    runs_desc = sorted(r["longest_shared_run_vs_description"] for r in pair_rows)
+    runs_err = sorted(r["longest_shared_run_vs_error_txt"] for r in pair_rows if r["longest_shared_run_vs_error_txt"] is not None)
+    text_check = {
+        "benchmark_text": "CyberGym vulnerability_description (level-1 task text)",
+        "training_text": "MiMo problem_statement (full task prompt)",
+        "tokenization": "lowercase \\w+ words",
+        "filter_view": {str(n): v for n, v in flagged.items()},
+        "pair_view": {
+            "pairs": len(pair_rows),
+            "cybergym_descriptions_shorter_than_13_words": sum(r["cybergym_description_words"] < 13 for r in pair_rows),
+            "description_names_mimo_target_function": sum(bool(r["description_names_mimo_target_function"]) for r in pair_rows),
+            "pairs_with_a_mimo_target_function": sum(r["description_names_mimo_target_function"] is not None for r in pair_rows),
+            "longest_shared_run_vs_description": {"max": runs_desc[-1], "median": runs_desc[len(runs_desc) // 2],
+                                                  **{f"pairs_ge_{n}": sum(x >= n for x in runs_desc) for n in NGRAM_SIZES}},
+            "longest_shared_run_vs_error_txt": ({"max": runs_err[-1], "median": runs_err[len(runs_err) // 2],
+                                                 **{f"pairs_ge_{n}": sum(x >= n for x in runs_err) for n in NGRAM_SIZES}}
+                                                if runs_err else None)},
+    }
+
+    # 6. Filtered split: drop bugs that are in CyberGym, keep one task per remaining bug (preferring a
     #    spec that names a real crash site), and drop bugs whose only spec names a fuzzer entry point.
     clean, dropped_suspect = [], 0
     for b, ts in mimo_by_bug.items():  # first-appearance order
@@ -222,6 +319,10 @@ def main():
         for b, ts in sorted(dups.items()):
             w.writerow([b, ";".join(t["instance_id"] for t in ts), len({t["spec"] for t in ts}) == 1])
     (OUT / "mimo_cyber_clean_ids.txt").write_text("\n".join(clean) + "\n")
+    with open(OUT / "text_overlap.csv", "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(pair_rows[0]))
+        w.writeheader()
+        w.writerows(pair_rows)
     with open(OUT / "mimo_suspect_specs.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["mimo_instance_id", "spec", "bug_in_cybergym"])
@@ -246,9 +347,10 @@ def main():
                            "removed_fuzzer_entry_point_only": dropped_suspect,
                            "removed_duplicate_copies": non_cg_tasks - len(clean) - dropped_suspect},
         "signature_check": sig,
+        "text_check": text_check,
     }
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2))
-    print(json.dumps({k: summary[k] for k in ("counts", "overlap", "chance_baseline", "filtered_split")}, indent=2))
+    print(json.dumps({k: summary[k] for k in ("counts", "overlap", "chance_baseline", "filtered_split", "text_check")}, indent=2))
     if sig:
         print("signatures:", json.dumps(sig["result"]), "| control:", json.dumps(sig["control_same_project_other_bug"]))
 
