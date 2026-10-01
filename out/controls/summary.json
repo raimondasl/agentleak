@@ -1,0 +1,188 @@
+{
+  "sources": {
+    "jm_rt_arvo_cybergym_2000": "jm-rt/arvo-cybergym-2000@75a80a9f1f534b26e31a502a5f7b0824565dfac1",
+    "swe_gym": "SWE-Gym/SWE-Gym@bb94ed9e39bbeb96a7fcbfb533b80f25a7fd59cb",
+    "r2e_gym_subset": "R2E-Gym/R2E-Gym-Subset@2e8108ff942f24fcb5686badfaf7f9a8808566d5",
+    "swe_smith": "SWE-bench/SWE-smith@ea6d7173829c7ec8fa16c22055699ff2e9188091",
+    "cybergym": "sunblaze-ucb/cybergym@bde190ded494e52bc684b66073b436c9d992c7c6",
+    "sec_bench": "SEC-bench/SEC-bench@11422e774857272b8f5460c699dca7a64046308b",
+    "swe_bench": "SWE-bench/SWE-bench@c6fe717fd7a4c3ac1daa4055a4fd082c6a1d28a2",
+    "swe_bench_pro": "ScaleAI/SWE-bench_Pro@2d52cb3df914a3fcf80c7f66738b3a88ae37fc50",
+    "multi_swe_bench": "ByteDance-Seed/Multi-SWE-bench@56ff018c04a38e27ada1e9d0a6d5839a51f88f0d",
+    "swe_polybench": "AmazonScience/SWE-PolyBench@d56445f9940eae4e9d2974ec66820c2f1d7754e6",
+    "swe_bench_multilingual": "SWE-bench/SWE-bench_Multilingual@846e647b9f33c0b51b739d005d13d85493c9af09"
+  },
+  "stated_exclusions": {
+    "jm-rt/arvo-cybergym-2000": "Dataset card: combines jm-rt/arvo-cybergym-1000 with a second 1000-task ARVO batch 'built outside the original CyberGym set'.",
+    "SWE-Gym": "Paper (Pan et al., ICML 2025): its 11 repositories 'are separate from those used in SWE-Bench to avoid contamination'.",
+    "R2E-Gym (Subset)": "Paper (Jain et al., COLM 2025): decontaminated by 'removing repositories overlapping with SWE-Bench test-set repositories'.",
+    "SWE-smith": "Paper (Yang et al., NeurIPS 2025): removed 'all 12 SWE-bench test repositories from consideration'."
+  },
+  "notes": [
+    "Multi-SWE-bench excludes its python/ folder (a copy of SWE-bench Verified) and includes the Kotlin extension.",
+    "SWE-smith tasks are mostly synthetic bugs; its PR-mirror tasks (instance IDs ending .pr_N) revert real upstream PRs, and swe_repo_presence.SWE-smith.pr_mirrors counts how many are in repos shared with a benchmark.",
+    "R2E-Gym tasks are commits without PR numbers; R2E-Gym lists repository names without owners."
+  ],
+  "cyber_control": {
+    "tasks": 2000,
+    "distinct_ids": 2000,
+    "task_id_kinds": {
+      "arvo": 2000
+    },
+    "vs_cybergym": {
+      "cybergym_tasks": 1507,
+      "plain_id_join": 0,
+      "translated_id_join": 0
+    },
+    "vs_secbench_oss": {
+      "secbench_oss_instances": 100,
+      "plain_id_join": 0,
+      "translated_id_join": 35,
+      "translated_matches_strict_blob_test": {
+        "same_blob_pairs": 10,
+        "different_blob_pairs": 23,
+        "not_comparable": 2
+      },
+      "translated_matches_crash_type_differs_by_sanitizers": {
+        "jm-rt MemorySanitizer vs SEC-bench AddressSanitizer": 5,
+        "jm-rt UndefinedBehaviorSanitizer vs SEC-bench AddressSanitizer": 2
+      },
+      "translated_matches_fix_lines_contained": {
+        "contained": 28,
+        "not_contained": 7
+      },
+      "translated_matches_crash_check": {
+        "type_only": 6,
+        "frame_only": 3,
+        "type_and_frame": 22,
+        "no_match": 4
+      },
+      "crash_check_control_same_project_cross_pairs": {
+        "no_match": 215,
+        "type_only": 74,
+        "type_and_frame": 15
+      },
+      "control_pairs_by_project": {
+        "libxml2": 210,
+        "matio": 2,
+        "mruby": 72,
+        "njs": 2,
+        "openexr": 12,
+        "wasm3": 6
+      },
+      "ids": [
+        42477894,
+        42477896,
+        42484562,
+        42486772,
+        42495624,
+        42495805,
+        42496369,
+        42503233,
+        42503239,
+        42503243,
+        42509369,
+        42510687,
+        42511621,
+        42513157,
+        42513165,
+        42513630,
+        42517254,
+        42517450,
+        42517942,
+        42523579,
+        42524709,
+        42524837,
+        42525197,
+        42525210,
+        42528868,
+        42528943,
+        42528947,
+        42528949,
+        42528951,
+        42528994,
+        42528997,
+        42531092,
+        42531481,
+        42532420,
+        42532953
+      ]
+    },
+    "jm_projects": 233
+  },
+  "swe_benchmark_sizes": {
+    "SWE-bench (test)": 2294,
+    "SWE-bench Pro": 731,
+    "Multi-SWE-bench": 1737,
+    "SWE-PolyBench": 2110,
+    "SWE-bench Multilingual": 300
+  },
+  "swe_repo_presence": {
+    "SWE-Gym": {
+      "tasks": 2438,
+      "repos": 11,
+      "repo_match": "owner/name",
+      "shared_repos": {
+        "SWE-bench (test)": [],
+        "SWE-bench Pro": [],
+        "Multi-SWE-bench": [],
+        "SWE-PolyBench": [],
+        "SWE-bench Multilingual": []
+      }
+    },
+    "R2E-Gym (Subset)": {
+      "tasks": 4578,
+      "repos": 10,
+      "repo_match": "repository name only (R2E-Gym lists no owners)",
+      "shared_repos": {
+        "SWE-bench (test)": [],
+        "SWE-bench Pro": [],
+        "Multi-SWE-bench": [],
+        "SWE-PolyBench": [],
+        "SWE-bench Multilingual": []
+      }
+    },
+    "SWE-smith": {
+      "tasks": 59136,
+      "repos": 222,
+      "repo_match": "owner/name",
+      "shared_repos": {
+        "SWE-bench (test)": [],
+        "SWE-bench Pro": [],
+        "Multi-SWE-bench": [
+          "google/gson"
+        ],
+        "SWE-PolyBench": [
+          "google/gson"
+        ],
+        "SWE-bench Multilingual": [
+          "caddyserver/caddy",
+          "gin-gonic/gin",
+          "google/gson"
+        ]
+      },
+      "pr_mirrors": {
+        "pr_mirror_tasks": 2481,
+        "pr_mirror_repos": 90,
+        "pr_mirror_tasks_in_repos_shared_with_a_benchmark": 0,
+        "tasks_in_shared_repos": {
+          "caddyserver/caddy": 544,
+          "gin-gonic/gin": 101,
+          "google/gson": 11
+        }
+      }
+    }
+  },
+  "swe_gym_pr_join": {
+    "pairs": 0,
+    "by_benchmark": {},
+    "same_base": 0
+  },
+  "swe_gym_base_commit_in_benchmark": {
+    "SWE-bench (test)": 0,
+    "SWE-bench Pro": 0,
+    "Multi-SWE-bench": 0,
+    "SWE-PolyBench": 0,
+    "SWE-bench Multilingual": 0
+  }
+}
