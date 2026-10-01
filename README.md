@@ -224,12 +224,14 @@ In total, 348 of V2's 32,079 tasks (1.1%) match a benchmark task.
 | SWE-PolyBench | 21 | 6 |
 | SWE-bench Multilingual | 41 | 15 |
 
-None of the 12 SWE-bench test repos (the same 12 as in Verified) is in V2. By contrast, each multilingual benchmark, including the Kotlin extension, shares a quarter or more of its repos with V2. V2's paper and dataset card do not say why. Some absences have likely reasons:
-- **pylint:** V2's paper says it keeps only repos with permissive licenses, and pylint is GPL-2.0.
-- **django:** V2 needs a linked GitHub issue, and django has GitHub issues disabled.
-- **SWE-bench Pro:** the same license rule may explain why none of its public repos, which are GPL or AGPL, is in V2.
+None of the 12 SWE-bench test repos (the same 12 as in Verified) is in V2. By contrast, each multilingual benchmark, including the Kotlin extension, shares a quarter or more of its repos with V2.
 
-We found no such reason for the other 10 SWE-bench repos. V2's authors do not say whether they excluded them, and we have not tested whether their absence could be chance.
+V2's authors explained this after our heads-up ([discussion #5](https://huggingface.co/datasets/nebius/SWE-rebench-V2/discussions/5), 2026-10-01):
+- They excluded all repositories of the original SWE-bench, filtering by repository.
+- They did not explicitly filter against the other benchmarks listed here.
+- They said they will update the dataset card to explain this, add a warning about the overlaps, and link to this analysis and its ID lists.
+
+Their answer covers the original SWE-bench only. For SWE-bench Pro, V2's paper says it keeps only repos with permissive licenses, which may explain why none of Pro's public repos, which are GPL or AGPL, is in V2.
 
 **Would an n-gram text filter have caught it?** For V2, yes. V2 keeps each PR's original issue text, so 347 of the 348 overlapping tasks share a 13-gram with their own benchmark task (median longest shared run: 194.5 words). The last one has identical but very short text.
 - The same filter also flags 1,249 of the other 31,731 V2 tasks (benchmark text includes the Kotlin extension). We did not classify these; a shared 13-gram alone does not make a task an overlap.
@@ -246,7 +248,7 @@ For V2-PRs, whose problem statements are written by an LLM, no. None of its 20 o
   - A model trained on V2 and then evaluated on one of these benchmarks is partly evaluated on its own training tasks: 4.0% of SWE-bench Multilingual, 5.1% of Multi-SWE-bench and 11.3% of SWE-PolyBench (10.7% of its Verified subset). It is 13.3% of the Kotlin extension.
   - V2-PRs adds a few more by repo and PR: Multi-SWE-bench 3, SWE-PolyBench 6, SWE-bench Multilingual 11. 6 of the 11 Multilingual ones have the same base commit.
 - **Does not:**
-  - Show that V2's builders chose benchmark PRs or broke a rule they stated. V2 does not claim to exclude these benchmarks, and Multi-SWE-bench PRs are in V2 at about the rate of the PRs Multi-SWE-bench's pipeline removed.
+  - Show that V2's builders chose benchmark PRs or broke a rule they stated. V2's authors say they excluded the original SWE-bench's repositories and did not explicitly filter against these benchmarks. Multi-SWE-bench PRs are in V2 at about the rate of the PRs Multi-SWE-bench's pipeline removed.
   - Mean that V2's builders could have avoided the Kotlin overlap. Those tasks were added to Multi-SWE-bench after V2 was released.
   - Say anything about any model's scores.
   - Cover every overlap.
