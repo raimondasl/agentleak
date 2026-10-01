@@ -33,7 +33,7 @@ The case-1 numbers are in README.md:
 ## Phase 1: public note (now)
 1. ~~The user posts `drafts/hf_discussion.md` on the MiMo-V2.6-RL-oss discussions page from their own account.~~ Done 2026-09-30 (#6).
 2. ~~The user posts the follow-up `drafts/hf_followup.md` in #6 (text-filter result plus a question about the images).~~ Done 2026-10-01.
-3. Wait for a reply, or until about 2026-10-08. Then add the image results to README.md (merge `hold/image-check-v2`) and publish `drafts/devto.md` and `drafts/social.md`, updated with any reply.
+3. Wait for a reply, or until about 2026-10-08. Then add the image results to README.md (merge `hold/image-check-v2`) and publish `drafts/devto.md` and `drafts/social.md`, updated with any reply. Scope (agreed 2026-10-01): one post led by case 1, with a short section on cases 2 and 3, including case 3's result that text filters work when both sides keep the original issue text.
 4. Hold `drafts/optional_model_repo_question.md` (Xiaomi's modified CyberGym harness). Post it on the model repo only if the dataset thread goes well.
 5. If Xiaomi fixes or annotates the dataset, update README.md and rerun against the new revision.
 
@@ -51,21 +51,16 @@ Case 1 is the template: one script per case, pinned revisions, outputs in `out/`
   - Add case 2's within-project chance baseline to case 1 too (exploratory run done, needs an independent check).
 - **Layout:** with three cases, move them into `cases/<name>/` and factor the shared helpers out of `mimo_cybergym.py`. Do this after `hold/image-check-v2` is merged, to avoid conflicts.
 
-## Gate around Oct 20 → FORGE 2027 Data and Benchmarking Track (Nov 15 AoE, 4+1 pages)
-Call for papers checked 2026-10-01:
-- IEEE template (IEEEtran, 10pt conference), and appendices count toward the 4 pages.
-- Double-anonymous review: reviewers need an anonymized artifact, because this repo identifies the author.
-- Submission site: forge2027-benchmarking.hotcrp.com.
-- Per the ICSE 2027 rules that FORGE follows, one author registers and presents (Dublin, 26–27 Apr 2027).
-- Notification is 2027-01-04.
-- **Go** if there is a second real source-level overlap outside MiMo, or a clear text-vs-ID gap. Case 1's text check shows a clear gap (0 of 278 caught by a 13-gram filter), and case 2 is a second source-level overlap outside MiMo (between benchmarks). In case 2, a 13-gram filter against CyberGym's descriptions catches 0 of 35, but one against CyberGym's sanitizer reports catches 29 of 35, with false positives. Case 3 adds a training-set case outside MiMo, and shows where text filters do work. So whether text filtering works depends on whether both sides keep the same original text, and on which benchmark text it is run against. The gate looks met.
-- **Otherwise stop.** The note plus the tool is the right-sized output.
-- The effect experiment is optional and runs only if a cheap pilot shows signal. It would run MiMo-Pro via API on overlapping vs matched non-overlapping CyberGym items, with a non-MiMo control. The minimum detectable difference is about 13–15pp, and RL spillover biases the effect toward zero.
+## Paper: go (decided 2026-10-01)
+The gate was met: case 1 shows a clear text-vs-ID gap (0 of 278 caught by a 13-gram filter), case 2 is a second source-level overlap outside MiMo (between benchmarks), and case 3 adds a training-set case outside MiMo where text filters do work.
+- Venue details, the outline, the related-work notes and the draft are local in `drafts/` (gitignored). The review is double-anonymous, so this public file no longer names the venue.
+- Next: related-work sweep with every reference checked against its primary source; a draft for cases 2 and 3 and the method now, case 1 after the hold batch; an anonymized artifact mirror; an independent check of all numbers and wording before submission.
+- The effect experiment stays out. It would run MiMo-Pro via API on overlapping vs matched non-overlapping CyberGym items, with a non-MiMo control. The minimum detectable difference is about 13–15pp, and RL spillover biases the effect toward zero.
 
 ## Budget and effort
 - Phase 1: about $0 and 3–5 human hours.
 - Phase 2: under $50 and 10–15 human hours.
-- FORGE paper: 15–20 human hours, plus ICSE 2027 registration and travel if accepted.
+- Paper: 15–20 human hours, plus conference registration and travel if accepted.
 - Coding agents write the scripts and joins.
 
 ## Kill criteria
