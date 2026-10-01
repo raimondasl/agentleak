@@ -1,0 +1,314 @@
+{
+  "sources": {
+    "secbench": "SEC-bench/SEC-bench@11422e774857272b8f5460c699dca7a64046308b data/eval-oss.jsonl data/eval-cve.jsonl",
+    "cybergym": "sunblaze-ucb/cybergym@bde190ded494e52bc684b66073b436c9d992c7c6 split=tasks + data/*/*/patch.diff, error.txt",
+    "arvo_mapping": "https://raw.githubusercontent.com/n132/ARVO/bc2a373c6b32fb3d9e7f86c516b1844885dcec51/arvo/oss_fuzz_mappings.csv",
+    "arvo_v1_pool": "https://api.github.com/repos/n132/ARVO-Meta/git/trees/df107a1b3bc839de773b477a49e86d2d9ee75ff9",
+    "arvo_projects": "https://raw.githubusercontent.com/n132/ARVO/bc2a373c6b32fb3d9e7f86c516b1844885dcec51/arvo/NewTracker/metadata.jsonl"
+  },
+  "counts": {
+    "secbench_instances": {
+      "oss": 100,
+      "cve": 200
+    },
+    "cybergym_tasks": 1507,
+    "secbench_projects": 32,
+    "secbench_projects_in_cybergym": 27,
+    "cybergym_tasks_in_secbench_projects": 336,
+    "secbench_patches_without_index_lines": {
+      "oss": 5
+    },
+    "secbench_patches_with_no_diff": {
+      "oss": 2
+    },
+    "cybergym_patches_without_index_lines": [
+      "arvo:20905",
+      "arvo:34096",
+      "arvo:35140"
+    ],
+    "secbench_reports_without_symbolized_frame": {
+      "oss": 8,
+      "cve": 14
+    }
+  },
+  "id_join_oss": {
+    "plain_instances": 3,
+    "translated_instances": 33,
+    "translated_cybergym_tasks": 33,
+    "translated_by_cybergym_kind": {
+      "arvo": 30,
+      "oss-fuzz": 3
+    }
+  },
+  "same_fix_join": {
+    "instances": {
+      "oss": 33,
+      "cve": 2
+    },
+    "cybergym_tasks": 36,
+    "oss_id_overlaps_with_same_fix": 33,
+    "oss_same_fix_without_id_match": [],
+    "cybergym_tasks_found_only_by_same_fix": [
+      "arvo:54839",
+      "arvo:64574",
+      "oss-fuzz:42537168"
+    ],
+    "pairs": 36,
+    "pairs_where_cybergym_patch_covers_every_secbench_file": 36
+  },
+  "overlap_union": {
+    "instances": {
+      "oss": 33,
+      "cve": 2
+    },
+    "cybergym_tasks": 36,
+    "cybergym_share": 0.0239
+  },
+  "crash_check": {
+    "pairs": 36,
+    "result": {
+      "type_and_frame": 27,
+      "frame_only": 2,
+      "no_match_no_frame": 1,
+      "type_only_no_frame": 5,
+      "type_only": 1
+    },
+    "result_by_join": {
+      "id_translated": {
+        "type_and_frame": 25,
+        "frame_only": 2,
+        "no_match_no_frame": 1,
+        "type_only_no_frame": 4,
+        "type_only": 1
+      },
+      "same_fix_cve": {
+        "type_and_frame": 2
+      }
+    },
+    "control_same_project_other_bug": {
+      "pairs": 202,
+      "no_match": 117,
+      "type_only": 55,
+      "no_match_no_frame": 20,
+      "type_and_frame": 2,
+      "type_only_no_frame": 4,
+      "frame_only": 4,
+      "type_and_frame_rate": 0.01
+    }
+  },
+  "chance_baseline_oss": {
+    "uniform": {
+      "pool_N": 4993,
+      "benchmark_in_pool_K": 1368,
+      "sample_n": 79,
+      "expected": 21.6,
+      "sd": 3.9,
+      "observed": 30,
+      "z": 2.12,
+      "p_ge_observed": 0.0254
+    },
+    "within_project": {
+      "strata": 10,
+      "expected": 27.7,
+      "sd": 3.6,
+      "observed": 30,
+      "z": 0.64,
+      "p_ge_observed": 0.3065,
+      "pool_bugs_without_project": 8,
+      "strata_with_secbench_bugs": {
+        "libxml2": {
+          "pool": 87,
+          "cybergym": 34,
+          "secbench": 19,
+          "shared": 8
+        },
+        "mruby": {
+          "pool": 83,
+          "cybergym": 38,
+          "secbench": 17,
+          "shared": 8
+        },
+        "php": {
+          "pool": 101,
+          "cybergym": 20,
+          "secbench": 16,
+          "shared": 5
+        },
+        "mupdf": {
+          "pool": 82,
+          "cybergym": 32,
+          "secbench": 7,
+          "shared": 4
+        },
+        "upx": {
+          "pool": 14,
+          "cybergym": 12,
+          "secbench": 5,
+          "shared": 5
+        },
+        "libxslt": {
+          "pool": 36,
+          "cybergym": 8,
+          "secbench": 4,
+          "shared": 0
+        },
+        "openexr": {
+          "pool": 13,
+          "cybergym": 3,
+          "secbench": 4,
+          "shared": 0
+        },
+        "wasm3": {
+          "pool": 38,
+          "cybergym": 1,
+          "secbench": 3,
+          "shared": 0
+        },
+        "matio": {
+          "pool": 62,
+          "cybergym": 2,
+          "secbench": 2,
+          "shared": 0
+        },
+        "njs": {
+          "pool": 16,
+          "cybergym": 3,
+          "secbench": 2,
+          "shared": 0
+        }
+      }
+    },
+    "note": "SEC-bench oss bugs in ARVO's first release vs CyberGym ARVO tasks"
+  },
+  "text_check": {
+    "bug_description + sanitizer_report": {
+      "filter_view": {
+        "13": {
+          "overlap_flagged": 0,
+          "overlap_flagged_by_own_cybergym_task": 0,
+          "overlap": 35,
+          "other_flagged": 0,
+          "other": 265
+        },
+        "8": {
+          "overlap_flagged": 1,
+          "overlap_flagged_by_own_cybergym_task": 0,
+          "overlap": 35,
+          "other_flagged": 0,
+          "other": 265
+        }
+      },
+      "pair_longest_shared_run": {
+        "pairs": 36,
+        "max": 4,
+        "median": 2,
+        "pairs_ge_13": 0,
+        "pairs_ge_8": 0
+      }
+    },
+    "sanitizer_report": {
+      "filter_view": {
+        "13": {
+          "overlap_flagged": 0,
+          "overlap_flagged_by_own_cybergym_task": 0,
+          "overlap": 35,
+          "other_flagged": 0,
+          "other": 265
+        },
+        "8": {
+          "overlap_flagged": 0,
+          "overlap_flagged_by_own_cybergym_task": 0,
+          "overlap": 35,
+          "other_flagged": 0,
+          "other": 265
+        }
+      },
+      "pair_longest_shared_run": {
+        "pairs": 36,
+        "max": 3,
+        "median": 2,
+        "pairs_ge_13": 0,
+        "pairs_ge_8": 0
+      }
+    },
+    "bug_report": {
+      "filter_view": {
+        "13": {
+          "overlap_flagged": 0,
+          "overlap_flagged_by_own_cybergym_task": 0,
+          "overlap": 35,
+          "other_flagged": 0,
+          "other": 265
+        },
+        "8": {
+          "overlap_flagged": 0,
+          "overlap_flagged_by_own_cybergym_task": 0,
+          "overlap": 35,
+          "other_flagged": 0,
+          "other": 265
+        }
+      },
+      "pair_longest_shared_run": {
+        "pairs": 36,
+        "max": 3,
+        "median": 1,
+        "pairs_ge_13": 0,
+        "pairs_ge_8": 0
+      }
+    }
+  },
+  "text_check_vs_cybergym_sanitizer_reports": {
+    "scope": "the 336 CyberGym error.txt files in SEC-bench's projects (not all 1507)",
+    "raw": {
+      "same_bug_pairs_flagged": 31,
+      "same_bug_pairs": 36,
+      "other_same_project_pairs_flagged": 433,
+      "other_same_project_pairs": 1056,
+      "filter_overlap_flagged": 33,
+      "filter_overlap_flagged_by_own_cybergym_task": 30,
+      "filter_overlap": 35,
+      "filter_other_flagged": 147,
+      "filter_other": 265,
+      "filter_other_in_cybergym_projects": 259
+    },
+    "without_boilerplate": {
+      "boilerplate": "13-grams found in at least 3 of those files",
+      "same_bug_pairs_flagged": 28,
+      "same_bug_pairs": 36,
+      "other_same_project_pairs_flagged": 23,
+      "other_same_project_pairs": 1056,
+      "filter_overlap_flagged": 29,
+      "filter_overlap_flagged_by_own_cybergym_task": 27,
+      "filter_overlap": 35,
+      "filter_other_flagged": 40,
+      "filter_other": 265,
+      "filter_other_in_cybergym_projects": 259
+    },
+    "boilerplate_threshold_sensitivity": {
+      "2": {
+        "same_bug_pairs_flagged": 21,
+        "same_bug_pairs": 36,
+        "other_same_project_pairs_flagged": 9,
+        "other_same_project_pairs": 1056,
+        "filter_overlap_flagged": 25,
+        "filter_overlap_flagged_by_own_cybergym_task": 21,
+        "filter_overlap": 35,
+        "filter_other_flagged": 33,
+        "filter_other": 265,
+        "filter_other_in_cybergym_projects": 259
+      },
+      "5": {
+        "same_bug_pairs_flagged": 29,
+        "same_bug_pairs": 36,
+        "other_same_project_pairs_flagged": 40,
+        "other_same_project_pairs": 1056,
+        "filter_overlap_flagged": 30,
+        "filter_overlap_flagged_by_own_cybergym_task": 28,
+        "filter_overlap": 35,
+        "filter_other_flagged": 53,
+        "filter_other": 265,
+        "filter_other_in_cybergym_projects": 259
+      }
+    }
+  }
+}
