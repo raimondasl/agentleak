@@ -231,7 +231,7 @@ None of the 12 SWE-bench test repos (the same 12 as in Verified) is in V2. By co
 V2's authors explained this after our heads-up ([discussion #5](https://huggingface.co/datasets/nebius/SWE-rebench-V2/discussions/5), 2026-10-01):
 - They excluded all repositories of the original SWE-bench, filtering by repository.
 - They did not explicitly filter against the other benchmarks listed here.
-- They said they will update the dataset card to explain this, add a warning about the overlaps, and link to this analysis and its ID lists.
+- They added a warning to the dataset card the same day, linking to this section (revision `10483de0`). That commit changed only the card; the data files are identical to `475dd5e8`, so the results here apply to the current revision.
 
 Their answer covers the original SWE-bench only. For SWE-bench Pro, V2's paper says it keeps only repos with permissive licenses, which may explain why none of Pro's public repos, which are GPL or AGPL, is in V2.
 

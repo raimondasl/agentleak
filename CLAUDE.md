@@ -6,6 +6,7 @@
 - **Python:** use `uv` only (`uv run`, `uv add`); never bare `pip` or `python`.
 - **Reproducibility:** every dataset is read at a **pinned revision** (HF commit SHA or git commit). Record the revisions in the script and in `out/summary.json`.
 - **One script per audit case.** It writes all outputs (CSV/JSON/TXT) to its output folder. `README.md` reports only numbers that the script produces.
+- **Stable links:** don't rename README section headings or move tracked `out/` files. Public posts and a dataset card (SWE-rebench-V2) link to their anchors and paths.
 - **Independent check before publishing:** before any number goes into README.md or a post, re-derive it independently, e.g. with a separate agent and its own code, and check the wording for overclaims. Case 1 needed two rounds of this.
 - **Wording:**
   - Neutral: the finding is a risk for people who train on the data, not an accusation.
