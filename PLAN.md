@@ -8,7 +8,7 @@
   - they excluded all original SWE-bench repos, by repository;
   - they did not explicitly filter against the other benchmarks;
   - they will update the dataset card with a warning and a link to our lists.
-  - When the card changes, check the link. If they release a filtered revision, rerun case 3 against it.
+  - Done 2026-10-01 17:53 UTC (revision `10483de0`): the card warns about the overlap and links to README case 3. Only the card changed; the data files are identical to `475dd5e8`. Our reply with the exact file links was posted in #5. If they release a filtered revision, rerun case 3 against it.
 - Case 4 (the SWE benchmarks vs each other, benchmark vs benchmark) is done:
   - 132 task pairs are the same PR with the same fix. 109 are Multi-SWE-bench/SWE-PolyBench, 107 of them in `mui/material-ui`; 19 Multi-SWE-bench/Multilingual; 4 PolyBench/Multilingual.
   - Per benchmark: 7.8% of Multi-SWE-bench, 5.4% of SWE-PolyBench and 7.7% of SWE-bench Multilingual are in another of these benchmarks.
@@ -70,6 +70,8 @@ Case 1 is the template: one script per case, pinned revisions, outputs in `out/`
   - Docker images: a sample of 25 was checked for PoCs. The results are held (see Phase 1).
   - Add case 2's within-project chance baseline to case 1 too (exploratory run done, needs an independent check).
 - **Layout:** with four cases, move them into `cases/<name>/` and factor the shared helpers out of `mimo_cybergym.py`. Do this after `hold/image-check-v2` is merged, to avoid conflicts.
+  - Keep the README headings and the `out/` file paths unchanged: SWE-rebench-V2's dataset card and the eight public posts link to them.
+  - If paths must move, leave the old ones in place.
 
 ## Paper: go (decided 2026-10-01)
 The gate was met: case 1 shows a clear text-vs-ID gap (0 of 278 caught by a 13-gram filter), case 2 is a second source-level overlap outside MiMo (between benchmarks), and case 3 adds a training-set case outside MiMo where text filters do work.
