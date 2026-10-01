@@ -11,6 +11,8 @@ Source-level overlap audits between open agentic training data and agentic bench
 
 Against richer benchmark files the result can change. In case 2, a 13-gram filter against CyberGym's sanitizer reports flags 29 of 35, plus 40 of the other 265. In case 1, only 6 of 223 same-bug pairs share a 13-gram with CyberGym's report. Each section says what its finding does and does not show. None of them is a claim about any model's scores.
 
+As a check on the method, the [controls](#controls-datasets-that-excluded-a-benchmark) section matches four datasets that say they excluded a benchmark. [Data and licenses](#data-and-licenses) lists what this repo publishes and each source's license.
+
 ## Case 1: MiMo-V2.6-RL-oss (cyber) vs CyberGym
 
 [MiMo-V2.6-RL-oss](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss) is Xiaomi's open set of RL environments. Its `cyber` config has 1,000 vulnerability-reproduction tasks: the agent must craft an input that triggers a specific known bug.
@@ -338,3 +340,80 @@ It uses case 3's loaders and pinned revisions, and adds `SWE-bench/SWE-bench@c6f
 Outputs in `out/swe_benchmarks/`:
 - `overlap_pairs.csv`: one row per matched pair, with the joins that matched, the kind of match, same base commit, same fix (by blobs and by changed lines), the longest shared text run, and Verified-subset membership
 - `summary.json`: per benchmark pair, the counts, shares, fix and text checks and per-repo detail; also shared repos, tasks in any other benchmark, and patches without `index` lines
+
+## Controls: datasets that excluded a benchmark
+The cases above found overlap between sets that do not say they excluded each other. As a control, we checked four open datasets that say they kept a benchmark out, using the same joins.
+
+| Dataset | Says it excluded | Overlap with that benchmark | Overlap with benchmarks it did not exclude |
+|---|---|---|---|
+| `jm-rt/arvo-cybergym-2000`: 2,000 ARVO tasks in CyberGym's format | CyberGym. Its card says the second half was "built outside the original CyberGym set". | **0** of CyberGym's 1,507 tasks, by plain and by translated ID | **35** of SEC-bench's 100 OSS-Fuzz instances, all found only after ID translation |
+| SWE-Gym: 2,438 tasks, 11 repos | SWE-bench's repos ([paper](https://arxiv.org/abs/2412.21139)) | **0** shared repos, 0 shared PRs | none with Multi-SWE-bench, SWE-PolyBench, SWE-bench Multilingual or SWE-bench Pro |
+| R2E-Gym Subset: 4,578 tasks, 10 repos | SWE-bench's test repos ([paper](https://arxiv.org/abs/2504.07164)) | **0** shared repo names | none |
+| SWE-smith: 59,136 synthetic tasks, 222 repos | all 12 SWE-bench test repos ([paper](https://arxiv.org/abs/2504.21798)) | **0** shared repos | shared repos, not tasks (below) |
+
+**SWE-smith's shared repos.** SWE-smith shares `google/gson` with Multi-SWE-bench, SWE-PolyBench and SWE-bench Multilingual, and `caddyserver/caddy` and `gin-gonic/gin` with Multilingual. Its tasks in these three repos (656 in all) are synthetic bugs, LM-written or procedural edits. None is one of SWE-smith's 2,481 PR-mirror tasks, which revert real upstream PRs, so here a shared repo is not a shared task. None of the PR-mirror tasks is in any repo shared with these benchmarks.
+
+**Are the 35 jm-rt/SEC-bench matches the same bug?** By ARVO's ID mapping, they are the same OSS-Fuzz issue.
+- **Fix:** jm-rt's `patch.diff` diffs the whole vulnerable and fixed build trees, including build outputs and other checked-out repos. So it usually spans much more than the fix commit.
+  - Case 2's strict test (same git blobs before and after) confirms the same fix for 10 of the 35.
+  - A looser test asks whether every line that SEC-bench's patch removes or adds also appears, for the same file, in jm-rt's diff. It passes for 28 and fails for 7.
+  - Because jm-rt's diffs are large, the looser test is weaker evidence than the blob test.
+- **Crash:** the crash type and top project frame match for 22 of the 35. As a control, the same comparison matches 15 of 304 (4.9%) same-project pairs of different matched bugs; these pairs are clustered, with 210 of them in libxml2. All 7 pairs where the crash type differs compare a jm-rt MemorySanitizer or UndefinedBehaviorSanitizer build with SEC-bench's AddressSanitizer report.
+
+### What this does and does not show
+- **Does:**
+  - Where a dataset says it excluded a benchmark, the exclusion holds at the source level. None of the four shares an OSS-Fuzz issue (after ID translation) or a repository with the benchmark it excluded.
+  - A targeted exclusion covers only its target. `jm-rt/arvo-cybergym-2000`, whose card says its second half was built outside CyberGym, holds 35 of SEC-bench's 100 OSS-Fuzz bugs by ARVO's ID mapping. A plain ID join finds none of them, because the matched jm-rt tasks use ARVO's old IDs and SEC-bench uses the new ones (the mismatch described in case 2).
+- **Does not:**
+  - Show that these datasets are free of other overlap or leakage. Only the benchmarks named here were checked.
+    - R2E-Gym has no PR numbers and lists no owners, so it was matched by repository name alone.
+    - SWE-smith was compared by repository. Its PR-mirror tasks carry PR numbers, but none is in a repo it shares with a benchmark.
+  - Say how `jm-rt/arvo-cybergym-2000` is meant to be used, or that its builders missed anything they set out to do. Its card describes it only as CyberGym-format tasks for Harbor's CyberGym adapter, and does not mention SEC-bench.
+
+### Reproduce
+```
+uv run controls.py
+```
+Pinned sources:
+- `jm-rt/arvo-cybergym-2000@75a80a9f`
+- `SWE-Gym/SWE-Gym@bb94ed9e`
+- `R2E-Gym/R2E-Gym-Subset@2e8108ff`
+- `SWE-bench/SWE-smith@ea6d7173`, the combined dataset; its card now recommends the per-language `SWE-smith-[lang]` datasets
+
+The benchmarks are read at the revisions of cases 1–4.
+
+Outputs in `out/controls/`:
+- `summary.json`: stated exclusions, the jm-rt joins with the fix and crash checks, repo presence for every control and benchmark, and SWE-Gym's PR joins
+- `jm_rt_secbench_matches.csv`: the 35 jm-rt/SEC-bench matches, with the strict blob test, fix-line containment, crash check and each side's sanitizer
+- `swe_gym_pr_matches.csv`: SWE-Gym/benchmark PR matches (empty)
+
+## Data and licenses
+**This repo.** The code is MIT-licensed (`LICENSE`). From the datasets it publishes only identifiers: task, instance, OSS-Fuzz and PR IDs, repository names and PR numbers. It also publishes counts, flags and ID lists derived from them.
+- It does not redistribute task text, patches, Docker images or project code.
+- There are two exceptions, both MiMo-V2.6-RL-oss text (Apache-2.0):
+  - `out/mimo_suspect_specs.csv` quotes the one-line crash spec of 26 MiMo cyber tasks.
+  - The signature check in `out/summary.json` quotes the same kind of spec for 8 matched bugs.
+
+**Sources.** Each dataset's license as it states it at the revision we read:
+
+| Dataset | Revision | License as stated |
+|---|---|---|
+| XiaomiMiMo/MiMo-V2.6-RL-oss | `639865fd` | Apache-2.0 (dataset card) |
+| sunblaze-ucb/cybergym | `bde190de` | none on the dataset card; the GitHub code repo is Apache-2.0 |
+| n132/ARVO (mapping and tracker metadata) | `bc2a373c` | BSD-2-Clause (repo) |
+| n132/ARVO-Meta | `7e1a64f5` | none stated |
+| SEC-bench/SEC-bench | `11422e77` | MIT (dataset card) |
+| nebius/SWE-rebench-V2, SWE-rebench-V2-PRs | `475dd5e8`, `fbf0ecf5` | CC-BY-4.0 (dataset cards) |
+| ByteDance-Seed/Multi-SWE-bench, Multi-SWE-RL | `56ff018c`, `97776489` | "other"; the card says CC0, subject to ByteDance's IP rights, with the adapted project data under those projects' licenses |
+| AmazonScience/SWE-PolyBench, SWE-PolyBench_Verified | `d56445f9`, `b3fca77b` | MIT (dataset cards) |
+| SWE-bench/SWE-bench_Multilingual | `846e647b` | MIT (dataset card) |
+| SWE-bench/SWE-bench, SWE-bench_Verified | `c6fe717f`, `78f471bf` | none on the dataset cards; the GitHub harness is MIT |
+| ScaleAI/SWE-bench_Pro | `2d52cb3d` | per its card, the harness is MIT and task content is under the source repos' licenses |
+| jm-rt/arvo-cybergym-2000 | `75a80a9f` | none stated |
+| SWE-Gym/SWE-Gym | `bb94ed9e` | MIT (dataset card) |
+| R2E-Gym/R2E-Gym-Subset | `2e8108ff` | Apache-2.0 (dataset card) |
+| SWE-bench/SWE-smith | `ea6d7173` | MIT (dataset card) |
+
+The tasks in all of these come from open-source projects under their own licenses; this repo refers to them only by ID.
+
+**Intended use.** The lists are for removing overlapping items from training data and for reading benchmark results correctly. They contain no exploits, PoCs or task solutions. The same lists could in principle be used to pick overlapping items on purpose. The overlaps are already derivable from the public datasets, though; we publish them so they can be filtered out.
