@@ -11,11 +11,12 @@
   - There is no overlap with SWE-bench or SWE-bench Pro: they share no repos.
   - Both sides keep the issue text, so a 13-gram filter catches 130 of the 132.
   - See README.md. Numbers re-derived independently on 2026-10-01 (all 132 pairs matched row for row).
-- Heads-ups to the four benchmarks not yet contacted are drafted in `drafts/` (local), for the user to review and post:
-  - CyberGym: cases 1 and 2;
-  - Multi-SWE-bench, SWE-PolyBench, and SWE-bench (for Multilingual): cases 3 and 4.
-  - The SWE ones go out after the case-4 PR is merged.
-  - Targets: GitHub issues on sunblaze-ucb/cybergym, multi-swe-bench/multi-swe-bench, amazon-science/SWE-PolyBench and SWE-bench/SWE-bench. SWE-bench Multilingual has no tracker of its own.
+- Heads-ups to the other four benchmarks were posted on 2026-10-01, after case 4 was merged (#8):
+  - CyberGym, cases 1 and 2: [sunblaze-ucb/cybergym#24](https://github.com/sunblaze-ucb/cybergym/issues/24).
+  - Multi-SWE-bench, cases 3 and 4: [multi-swe-bench/multi-swe-bench#107](https://github.com/multi-swe-bench/multi-swe-bench/issues/107).
+  - SWE-PolyBench, cases 3 and 4: [amazon-science/SWE-PolyBench#43](https://github.com/amazon-science/SWE-PolyBench/issues/43).
+  - SWE-bench Multilingual, cases 3 and 4, posted on the SWE-bench tracker because Multilingual has none of its own: [SWE-bench/SWE-bench#673](https://github.com/SWE-bench/SWE-bench/issues/673).
+  - With these, the maintainers of all seven datasets with overlaps have been told.
 - A short note on the MiMo cyber overlap was posted on Prime Intellect's open port of the MiMo tasksets on 2026-10-01 ([PrimeIntellect-ai/prime-envs#843](https://github.com/PrimeIntellect-ai/prime-envs/pull/843#issuecomment-5934239337)).
 - Origin: idea I-20260929-02 in the private `ai-research` scouting repo.
 - Phase-2 scouting notes from 2026-09-30 (unverified, with pinned SHAs) are local only in `drafts/scouting_2026-09-30.md`.
