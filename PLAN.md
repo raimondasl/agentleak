@@ -2,11 +2,11 @@
 
 **Status (2026-09-30):**
 - Case 1 (MiMo-V2.6-RL-oss cyber vs CyberGym) is done and published in this repo.
-- The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). It has no reply yet. The dev.to and social drafts in `drafts/` (local only, gitignored) are not posted yet.
+- The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). A follow-up was posted on 2026-10-01 with the text-check result and a question about how some images were built. Neither has a reply yet. The dev.to and social drafts in `drafts/` (local only, gitignored) are not posted yet.
 - Origin: idea I-20260929-02 in the private `ai-research` scouting repo.
 - Phase-2 scouting notes from 2026-09-30 (unverified, with pinned SHAs) are local only in `drafts/scouting_2026-09-30.md`.
 - Text check for case 1 is done and in README.md: a 13-gram filter flags 0 of the 278 overlapping MiMo tasks.
-- Docker image check for case 1 is done on a sample. Its results are held until the dataset authors answer a follow-up question (`drafts/hf_followup.md`). The code is on the local branch `hold/image-check`, and the notes are local in `drafts/fix_binary_notes.md`.
+- Docker image check for case 1 is done on a sample. Its results are held until the dataset authors answer the follow-up question (posted 2026-10-01), or until about 2026-10-08. The code is on the local branch `hold/image-check`, and the notes are local in `drafts/fix_binary_notes.md`.
 
 ## Claim we can support
 Open agentic RL/SFT releases can overlap agentic benchmarks at the level of the **source item**: the same vulnerability, the same PR. The text can differ while the item is the same. Text-based decontamination misses this, and naive ID joins miss part of it, because upstream IDs get renumbered.
@@ -25,8 +25,8 @@ The case-1 numbers are in README.md:
 
 ## Phase 1: public note (now)
 1. ~~The user posts `drafts/hf_discussion.md` on the MiMo-V2.6-RL-oss discussions page from their own account.~~ Done 2026-09-30 (#6).
-2. The user posts the follow-up `drafts/hf_followup.md` in #6 (text-filter result plus a question about the images).
-3. Wait for a reply, or until about 2026-10-07. Then add the image results to README.md (merge `hold/image-check`) and publish `drafts/devto.md` and `drafts/social.md`, updated with any reply.
+2. ~~The user posts the follow-up `drafts/hf_followup.md` in #6 (text-filter result plus a question about the images).~~ Done 2026-10-01.
+3. Wait for a reply, or until about 2026-10-08. Then add the image results to README.md (merge `hold/image-check`) and publish `drafts/devto.md` and `drafts/social.md`, updated with any reply.
 4. Hold `drafts/optional_model_repo_question.md` (Xiaomi's modified CyberGym harness). Post it on the model repo only if the dataset thread goes well.
 5. If Xiaomi fixes or annotates the dataset, update README.md and rerun against the new revision.
 
