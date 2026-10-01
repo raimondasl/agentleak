@@ -1,6 +1,14 @@
 # agentleak
 
-Source-level overlap audits between open agentic training data and agentic benchmarks.
+Source-level overlap audits between open agentic training data and agentic benchmarks, and between benchmarks. Each case is one script with pinned inputs. It matches items on their source (the OSS-Fuzz bug or the GitHub pull request), not on their text.
+
+| Case | Pair | Shared items | Found by a plain ID or name join | Flagged by a 13-gram filter against the benchmark's task description |
+|---|---|---|---|---|
+| [1](#case-1-mimo-v26-rl-oss-cyber-vs-cybergym) | MiMo-V2.6-RL-oss cyber (training) vs CyberGym | 223 CyberGym tasks (278 MiMo tasks) | 139 of 223 | 0 of 278 |
+| [2](#case-2-sec-bench-vs-cybergym) | SEC-bench vs CyberGym (benchmark vs benchmark) | 35 SEC-bench instances (36 CyberGym tasks) | 3 of the 33 `oss` matches | 0 of 35 |
+| [3](#case-3-swe-rebench-v2-vs-multilingual-swe-benchmarks) | SWE-rebench-V2 (training) vs Multi-SWE-bench, SWE-PolyBench, SWE-bench Multilingual | 348 V2 tasks (+20 V2-PRs tasks) | 320 of 348 | 347 of 348 (V2-PRs: none of 20 pairs shares a 13-gram) |
+
+Against richer benchmark files the result can change. In case 2, a 13-gram filter against CyberGym's sanitizer reports flags 29 of 35, plus 40 of the other 265. In case 1, only 6 of 223 same-bug pairs share a 13-gram with CyberGym's report. Each section says what its finding does and does not show. None of them is a claim about any model's scores.
 
 ## Case 1: MiMo-V2.6-RL-oss (cyber) vs CyberGym
 
@@ -27,7 +35,7 @@ Because both sets draw on the same pool, some bugs appear in both:
 
 **How does this compare with chance?** All of CyberGym's 1,368 ARVO tasks come from ARVO's first release, a pool of 4,993 bugs.
 - **Distinct bugs:** 710 of MiMo's distinct bugs fall in that pool. A uniform random draw of 710 would share about **195 ± 11** bugs with CyberGym. We observe **219**: z = 2.2, one-sided p = 0.015. 4 more overlaps are in CyberGym's newer OSS-Fuzz slice.
-- **Exact old-scheme IDs:** 122 ± 9 expected, 135 observed (p = 0.08).
+- **Exact old-scheme IDs:** 122 ± 9 expected, 135 observed (z = 1.5, p = 0.08).
 - **What it means:** the overlap is what you get when neither set is filtered against the other. The modest excess could come from both sets preferring similar bugs; we don't know. This is no evidence of targeting.
 
 **Would an n-gram text filter have caught it?** Common decontamination filters drop a training item that shares a 13-word sequence (a 13-gram) with a benchmark item. We ran that test on two texts, both lowercased and split into words:
