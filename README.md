@@ -79,3 +79,82 @@ Outputs in `out/`:
 - `mimo_cyber_clean_ids.txt`
 - `text_overlap.csv`: per overlapping bug, the longest word sequence shared with CyberGym's task text and with its sanitizer report, and whether CyberGym's text names MiMo's target function
 - `summary.json`: all counts, chance baselines, the crash check and its control, and the text check
+
+## Case 2: SEC-bench vs CyberGym
+
+[SEC-bench](https://huggingface.co/datasets/SEC-bench/SEC-bench) has two tasks, PoC generation and patching. CyberGym has one, PoC generation. Both are built from real vulnerabilities in C/C++ projects. SEC-bench has two splits:
+- `cve`: 200 CVE instances, described in its paper.
+- `oss`: 100 OSS-Fuzz bugs, added to the dataset in November 2025, after both versions of the paper.
+
+Unlike case 1, this compares two benchmarks, not training data with a benchmark. Benchmarks sharing items is not a defect. It does mean that results on the shared bugs are not independent evidence. As in case 1, a plain ID join misses part of the overlap. Here it misses most of it: it finds 3 of 33.
+
+| | Count |
+|---|---|
+| SEC-bench `oss` instances whose bug is a CyberGym task, plain ID join | 3 |
+| ... after ID translation | **33 of 100** (30 `arvo:`, 3 `oss-fuzz:`) |
+| SEC-bench `cve` instances that share a fix with a CyberGym task | 2 of 200 |
+| CyberGym tasks involved | 36 of 1,507 (2.4%) |
+
+**IDs.** SEC-bench names OSS-Fuzz bugs by their new tracker IDs, e.g. `php.ossfuzz-42491394`. CyberGym's ARVO tasks use the old IDs: the same bug is `arvo:29271`. A plain ID join finds only the 3 that CyberGym lists under new `oss-fuzz:` IDs.
+
+**Same fix.** Independently of IDs, we compare fix patches. Two tasks share a fix when their patches touch at least one common file, and every common file has the same git blob before and after the change. Each SEC-bench instance is compared with every CyberGym task in its OSS-Fuzz project: 336 tasks across the 27 projects the two benchmarks share.
+- All 33 ID overlaps share the fix, and no other `oss` instance does. In the `cve` split, 2 instances do: `jq.cve-2023-50246` (`arvo:64574`) and `libredwg.cve-2022-45332` (`arvo:54839`).
+- One fix can cover more than one bug. `mupdf.ossfuzz-42537171` shares its fix with two CyberGym tasks, `oss-fuzz:42537171` and `oss-fuzz:42537168`.
+- In all 36 pairs, CyberGym's `patch.diff` contains every file of SEC-bench's gold patch (its `patch` field), with the same blobs.
+
+**Same crash?** As in case 1, we compare SEC-bench's sanitizer report with CyberGym's ground-truth report (`error.txt`) by crash type and top project frame (function name).
+- In 27 of 36 pairs, both match. For same-project pairs of different bugs, this happens 1.0% of the time (2 of 202).
+- Of the other 9: 6 match on crash type only (in 5 of them SEC-bench's report has no symbolized project frame), 2 on frame only, and 1 on neither.
+
+**How does this compare with chance?** 79 of the 100 `oss` bugs are in ARVO's first release, the pool that all of CyberGym's ARVO tasks come from.
+- **Uniform draw of 79 from that pool:** 21.6 ± 3.9 shared bugs expected. We observe **30**: z = 2.1, one-sided p = 0.025. The other 3 overlaps are in CyberGym's newer OSS-Fuzz slice, outside this pool.
+- **Draw within each OSS-Fuzz project** (projects from ARVO's tracker metadata): 27.7 ± 3.6 expected, 30 observed, z = 0.6, p = 0.31.
+- **What it means:** with each project's counts held fixed, the overlap is consistent with chance. The excess over a uniform draw comes from the project mix.
+  - SEC-bench's pool bugs are concentrated in libxml2 (19), mruby (17), php (16), mupdf (7) and upx (5).
+  - In four of these, CyberGym includes more than its overall 27% of ARVO's bugs: libxml2 34 of 87, mruby 38 of 83, mupdf 32 of 82, upx 12 of 14. php is the exception, at 20 of 101.
+  - The baseline does not show how either benchmark chose bugs within a project.
+
+**Would an n-gram text filter have caught it?** It depends on which CyberGym text the filter is run against.
+- **Against CyberGym's vulnerability descriptions** (`vulnerability_description`, also shipped as `description.txt`; agents get it at level 1): no. We ran case 1's 13-gram test on the text SEC-bench shows agents:
+  - `bug_description` + `sanitizer_report`, as in the current harness;
+  - `sanitizer_report` (PoC task) or `bug_report` (patch task), as in the paper-era OpenHands harness.
+
+  For each of these texts, the filter flags none of the 35 overlapping instances and none of the other 265. Same-bug pairs share at most 4 words in a row.
+- **Against CyberGym's sanitizer reports** (`error.txt`, given to agents at levels 2 and 3): it flags most overlapping instances, plus extra flags. SEC-bench's `sanitizer_report` is the same kind of text.
+  - We ran this filter only against the 336 CyberGym reports in SEC-bench's projects, not all 1,507.
+  - We first dropped sanitizer boilerplate, defined as 13-grams found in at least 3 of those 336 reports.
+  - It flags **29 of the 35** overlapping instances, 27 of them through their own bug's CyberGym report.
+  - It also flags 40 of the other 265 instances, which neither join links to a CyberGym task. We did not check these further.
+  - Per pair, a SEC-bench report shares a 13-gram with its own bug's CyberGym report in 28 of 36 cases, and with another CyberGym report in its project in 23 of 1,056.
+  - With a boilerplate threshold of 2 or 5 reports instead of 3, the filter flags 25 or 30 of the 35 overlapping instances, and 33 or 53 of the other 265.
+
+### What this does and does not show
+- **Does:**
+  - A third of SEC-bench's OSS-Fuzz split (33 of 100) are also CyberGym tasks, with the same fix.
+  - For these bugs, results on the two benchmarks are not independent evidence.
+  - CyberGym publishes each task's fix (`patch.diff` and `repo-fix`, which agents get at level 3). For these 35 instances, `patch.diff` contains SEC-bench's gold patch. A model trained on either benchmark's published files and then evaluated on the other would be tested partly on bugs whose fix and crash report it has seen. That is 35 of SEC-bench's 300 instances, or 36 of CyberGym's 1,507 tasks.
+- **Does not:**
+  - Show how either benchmark selected its bugs. Within projects, the overlap is consistent with chance, and the dataset card does not say how the `oss` bugs were chosen.
+  - Say anything about any model's scores.
+- **Does not:** cover every overlap.
+  - Bugs that share neither an OSS-Fuzz ID nor a fix commit are not found, e.g. the same bug fixed by different commits.
+  - Some patches cannot be compared because they have no `index` lines: 5 SEC-bench `oss` patches (2 of them have no diff at all) and 3 CyberGym patches.
+- **Does not:** cover other text filters. Only exact word n-grams with case 1's word splitting were tested. Other word splitting, other boilerplate rules, and a filter against all 1,507 sanitizer reports may change the result against sanitizer reports.
+
+### Filtered list
+`out/secbench_cybergym/secbench_not_in_cybergym.txt` lists the **265** SEC-bench instances (both splits) that neither join finds in CyberGym.
+
+### Reproduce
+```
+uv run secbench_cybergym.py
+```
+Pinned sources:
+- `SEC-bench/SEC-bench@11422e77`: `data/eval-oss.jsonl` and `data/eval-cve.jsonl`
+- `sunblaze-ucb/cybergym@bde190de`: `tasks` split, plus `patch.diff` and `error.txt` for the tasks in SEC-bench's projects
+- ARVO @ `bc2a373c`: old→new mapping, and tracker metadata for each bug's project
+- `n132/ARVO-Meta@7e1a64f5`, `archive_data/meta` (tree `df107a1b`): the first-release pool
+
+Outputs in `out/secbench_cybergym/`:
+- `overlap.csv`: one row per SEC-bench/CyberGym pair, with ID match (plain or translated), same fix and crash check
+- `secbench_not_in_cybergym.txt`
+- `summary.json`: all counts, both chance baselines with per-project counts, the crash check and its control, and both text checks with threshold sensitivity
