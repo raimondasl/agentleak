@@ -1,0 +1,1822 @@
+[
+  {
+    "tag": "arvo-v1-54839",
+    "digest": "sha256:3d46aac744cfe05b1b1746dc3a9fb0ffbf76e24e2e3c3343070b565d50f1c78c",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 10
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/fix_binary /root/fix_binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/fix_binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42470443",
+    "digest": "sha256:48cf0cca56ddb559646d374340d250f9d34bb791b54c70251cb336b80022d447",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42501146",
+    "digest": "sha256:8b8f0a3b0708d52bf1608ab156ad2262a433eca6ed2a1ab6277a1b2f10886563",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-27710",
+    "digest": "sha256:a44fc4488c87929a634bcc9b8c3bda5459e9aa0cfc3a099dc0fe517aa8751a3d",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 10
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/fix_binary /root/fix_binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/fix_binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42859",
+    "digest": "sha256:ce0fdff47ebb976555b2cd04b59ad78b771d45c4b886506e43d8652aad12ba5f",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-44221",
+    "digest": "sha256:689c12212e7ddd6cbd599aead0f8253737f75e548a4200b139f6eab2e1ca2cff",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-344",
+    "digest": "sha256:98bc0ce42e62ce22f6f489c054b1364ea0ce868babad20c00e4a4643c9fad0f1",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-10126",
+    "digest": "sha256:8962acf8a8b7d2a9c4e1631890a8bd7394a8c73885e7f87693838e50ef1a5d16",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-16266",
+    "digest": "sha256:477505a550598ca37c84f1ed5999358ae88b9c3332b65bad51d4916b8be62c45",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-21289",
+    "digest": "sha256:0bef62d9e55e676f99a152aac7c9acff6869bfb684d81c5e840699e83543f55e",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-25911",
+    "digest": "sha256:9f2a0e72607a94992d9074884f46cb2eff7af86e6cedafc919c4d580e3672a13",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-31768",
+    "digest": "sha256:7758e8f14867fbea323e1f1bf401f02d0a59eebeb4959595603d5ffc1b3b9ee3",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-39083",
+    "digest": "sha256:de055b216af36459bcd6d8ce221bea2f4621414e40c02d3135cae715d3c01a62",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-46883",
+    "digest": "sha256:a8678e4e4c118cfb8f3f3c0d9d7e948ee2436df75212e5da3fc44841ac5dbbc7",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 12
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/fix_binary /root/fix_binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/fix_binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-55820",
+    "digest": "sha256:8ea09fef5642662195f8f18acbfcf3435bc59855063f691ea03f4008c0273595",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 10
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/fix_binary /root/fix_binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/fix_binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42475442",
+    "digest": "sha256:e6bf94defe65100032cec6934d4e71d2a48d04cc737e28a858e1de9eee4e52c3",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42480815",
+    "digest": "sha256:69ce5140aa1bd138c71a798dee1958f1950ea3677d54517b4dc62103890dd376",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42483934",
+    "digest": "sha256:9c1878c5e204ee37cc33c6ce58ef6f005bef3e8ea32beeb40e9a654bacfb0c88",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42488351",
+    "digest": "sha256:8d7c85d104d6d2e1d968d2d5b1929108bca53bcb474c13035659fcf2cefee5e9",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42493692",
+    "digest": "sha256:72d3a8fbc6801dcaed3ade4c2ba024ae4b459104d1d5febf1e0668e914015f1d",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42503090",
+    "digest": "sha256:e27df41303f04c4931b3707ced6f0f6d28e012a6c7adad3a5862ae757c427a3f",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42515690",
+    "digest": "sha256:95176dfa08722ce88188de97803fbb87a2a4eafd7a9872a1fd1337ca5fd02316",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42522636",
+    "digest": "sha256:5bd25658dfbd7ae7f08a0ae26fa1d775e25e8a97b12e52aabe77b1f9cde95c82",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42532755",
+    "digest": "sha256:6b4f8eed0080ca94b96705a11c9eb893d540728562a2bf3d4d93f158a07b2ef1",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-42540213",
+    "digest": "sha256:f4b2bd75f4de7d489577d6b7aea1e5e92ed2cb6dae0a03933e8f3a43aec37f36",
+    "task_steps": [
+      {
+        "step": "WORKDIR /home/agent",
+        "listed": true,
+        "files": 0
+      },
+      {
+        "step": "COPY gdb-wrapper.sh /usr/local/bin/gdb # buildkit",
+        "listed": true,
+        "files": 4
+      },
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /usr/local/bin/gdb /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 8
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  },
+  {
+    "tag": "arvo-v1-1065",
+    "digest": "sha256:3deb5031142e755b917b9b562c0d801ff9de3b5bb9e98ce1da52bd968becd01a",
+    "task_steps": [
+      {
+        "step": "COPY server.py /root/server.py # buildkit",
+        "listed": true,
+        "files": 2
+      },
+      {
+        "step": "COPY entrypoint.sh /entrypoint.sh # buildkit",
+        "listed": true,
+        "files": 1
+      },
+      {
+        "step": "COPY submit.sh /home/agent/submit.sh # buildkit",
+        "listed": true,
+        "files": 3
+      },
+      {
+        "step": "RUN /bin/sh -c chmod +x /entrypoint.sh /home/agent/submit.sh &&     chmod 700 /root &&     chown verify:verify /home/verify && chmod 700 /home/verify # buildkit",
+        "listed": true,
+        "files": 6
+      },
+      {
+        "step": "COPY context/ /data/ # buildkit",
+        "listed": true,
+        "files": 11
+      },
+      {
+        "step": "RUN /bin/sh -c cp -r /data/binary /root/binary &&     cp -r /data/fix_binary /root/fix_binary &&     cp -r /data/binary /home/agent/binary &&     mkdir -p /home/agent/src &&     tar xzf /data/repo-vul.tar.gz -C /home/agent/src --strip-components=1 '--exclude=.git*' &&     chown -R agent:agent /home/agent &&     rm -rf /data # buildkit",
+        "listed": false
+      },
+      {
+        "step": "ADD arvo-opensource-env-and-verifier",
+        "listed": true,
+        "files": 2
+      }
+    ],
+    "data_context": [
+      "data/binary",
+      "data/fix_binary",
+      "data/repo-vul.tar.gz"
+    ],
+    "poc_like_paths": [],
+    "expected_crash_file_in_image": false,
+    "server_py": {
+      "sha256": "f2dbc86e1d4b23d3974df085280371695750f9b66245be21132c8ace62e0a04a",
+      "root_paths_named": [
+        "/root/binary",
+        "/root/expected_func.json",
+        "/root/last_poc",
+        "/root/last_result.json",
+        "/root/submit_count"
+      ],
+      "mentions_fix_binary": false
+    },
+    "config": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "bash"
+      ],
+      "WorkingDir": "/home/agent"
+    }
+  }
+]
