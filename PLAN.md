@@ -1,8 +1,8 @@
 # agentleak — plan
 
-**Status (2026-10-01):**
+**Status (2026-10-07):**
 - Case 1 (MiMo-V2.6-RL-oss cyber vs CyberGym) is done and published in this repo.
-- The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). A follow-up was posted on 2026-10-01 with the text-check result and a question about how some images were built. Neither has a reply yet. The dev.to and social drafts in `drafts/` (local only, gitignored) are not posted yet.
+- The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). A follow-up was posted on 2026-10-01 with the text-check result and a question about how some images were built. Neither had a reply by 2026-10-07. The dev.to and social drafts in `drafts/` (local only, gitignored) are not posted yet.
 - Case 2 (SEC-bench vs CyberGym, benchmark vs benchmark) is done: 33 of SEC-bench's 100 OSS-Fuzz instances are CyberGym bugs, but a plain ID join finds 3. See README.md. A heads-up was posted to the SEC-bench maintainers on 2026-10-01 ([SEC-bench/SEC-bench#4](https://github.com/SEC-bench/SEC-bench/issues/4)).
 - Case 3 (SWE-rebench-V2 training set vs Multi-SWE-bench, SWE-PolyBench and SWE-bench Multilingual) is done: 348 V2 tasks are the same PR at the same base commit as a benchmark task: 4–11% of each benchmark, and 13% of the Kotlin set added to Multi-SWE-bench after V2's release. Text filters would catch V2's overlap but not V2-PRs'. See README.md. A heads-up was posted to the V2 maintainers on 2026-10-01 ([nebius/SWE-rebench-V2 discussion #5](https://huggingface.co/datasets/nebius/SWE-rebench-V2/discussions/5)). V2's first author replied the same day (README.md, case 3):
   - they excluded all original SWE-bench repos, by repository;
@@ -21,11 +21,11 @@
   - SWE-PolyBench, cases 3 and 4: [amazon-science/SWE-PolyBench#43](https://github.com/amazon-science/SWE-PolyBench/issues/43).
   - SWE-bench Multilingual, cases 3 and 4, posted on the SWE-bench tracker because Multilingual has none of its own: [SWE-bench/SWE-bench#673](https://github.com/SWE-bench/SWE-bench/issues/673).
   - With these, the maintainers of all seven datasets with overlaps have been told.
-- A short note on the MiMo cyber overlap was posted on Prime Intellect's open port of the MiMo tasksets on 2026-10-01 ([PrimeIntellect-ai/prime-envs#843](https://github.com/PrimeIntellect-ai/prime-envs/pull/843#issuecomment-5934239337)).
+- A short note on the MiMo cyber overlap was posted on Prime Intellect's open port of the MiMo tasksets on 2026-10-01 ([PrimeIntellect-ai/prime-envs#843](https://github.com/PrimeIntellect-ai/prime-envs/pull/843#issuecomment-5934239337)). No reply as of 2026-10-07. On 2026-10-06 the port's README switched its data source to a Prime Intellect mirror that, by the README's description, drops 70 tasks a trivial input already solves (930 remain). Whether the 930-task mirror still holds the overlapping tasks was not checked.
 - Origin: idea I-20260929-02 in the private `ai-research` scouting repo.
 - Phase-2 scouting notes from 2026-09-30 (unverified, with pinned SHAs) are local only in `drafts/scouting_2026-09-30.md`.
 - Text check for case 1 is done and in README.md: a 13-gram filter flags 0 of the 278 overlapping MiMo tasks.
-- Docker image check for case 1 is done on a sample. Its results are held until the dataset authors answer the follow-up question (posted 2026-10-01), or until about 2026-10-08. The code is on the local branch `hold/image-check-v2`, and the notes are local in `drafts/fix_binary_notes.md`.
+- The held case-1 batch went into README.md on 2026-10-07, since #6 had no reply: the image check (26 images listed, plus build steps for all 1,000: 135 images hold a fixed build, exactly the tasks whose ID is a CyberGym `arvo:` ID; the in-image grader never mentions it in the 26 listed images, 5 of them with a fixed build), related bugs (20 CyberGym tasks), MiMo vs SEC-bench (15 shared bugs) and a within-project chance baseline for case 1 (219 vs 199 ± 9, z = 2.2, p = 0.017). The new numbers were re-derived independently on 2026-10-07, and the related-bug and SEC-bench outputs are identical to the versions checked on 2026-10-01. The local branch `hold/image-check-v2` is superseded.
 
 ## Claim we can support
 Open agentic RL/SFT releases can overlap agentic benchmarks at the level of the **source item**: the same vulnerability, the same PR. The text can differ while the item is the same.
@@ -49,7 +49,7 @@ The case-1 numbers are in README.md:
 ## Phase 1: public note (now)
 1. ~~The user posts `drafts/hf_discussion.md` on the MiMo-V2.6-RL-oss discussions page from their own account.~~ Done 2026-09-30 (#6).
 2. ~~The user posts the follow-up `drafts/hf_followup.md` in #6 (text-filter result plus a question about the images).~~ Done 2026-10-01.
-3. Wait for a reply, or until about 2026-10-08. Then add the image results to README.md (merge `hold/image-check-v2`) and publish `drafts/devto.md` and `drafts/social.md`, updated with any reply. Scope (agreed 2026-10-01): one post led by case 1, with a short section on cases 2 and 3, including case 3's result that text filters work when both sides keep the original issue text.
+3. ~~Wait for a reply, or until about 2026-10-08. Then add the image results to README.md.~~ Done 2026-10-07 (no reply). Next: once that PR is merged, the user posts `drafts/hf_update_case1.md` in #6 and publishes `drafts/devto.md`, then `drafts/social.md`. Scope (agreed 2026-10-01): one post led by case 1, with a short section on cases 2 and 3, including case 3's result that text filters work when both sides keep the original issue text.
 4. Hold `drafts/optional_model_repo_question.md` (Xiaomi's modified CyberGym harness). Post it on the model repo only if the dataset thread goes well.
 5. If Xiaomi fixes or annotates the dataset, update README.md and rerun against the new revision.
 
@@ -66,17 +66,17 @@ Case 1 is the template: one script per case, pinned revisions, outputs in `out/`
   - ~~Possible follow-up for case 3: SWE-bench Multilingual PRs looked under-included in V2 outside the 3 repos with capitalized GitHub names, which hinted at a name-based filter that failed on lowercase names.~~ Dropped 2026-10-01: V2's authors say they did not explicitly filter against Multilingual. Any remaining pattern would need another explanation and isn't worth an unpinned check.
 - **Text check:** 13-gram overlap on each new pair, to measure what text filters catch vs miss. Done for case 1 (0 of 278 caught), case 2 (0 of 35 against descriptions; 29 of 35 against same-project sanitizer reports, with extra flags), case 3 (347 of 348 caught for V2; 0 of 20 for V2-PRs) and case 4 (130 of 132 benchmark pairs share a 13-gram; in the other 2, the benchmarks attached different issues to the same PR).
 - **Open items from the case-1 review:**
-  - 223 is a lower bound. A reviewer estimated about 19 more CyberGym tasks sharing an exact ClusterFuzz crash signature with a MiMo bug under a different issue ID. A pinned check (fix commit or crash signature from ARVO's records) is in progress on the hold branch, together with MiMo vs SEC-bench; both are held with the other case-1 updates until about 2026-10-08.
-  - Docker images: a sample of 25 was checked for PoCs. The results are held (see Phase 1).
-  - Add case 2's within-project chance baseline to case 1 too (exploratory run done, needs an independent check).
-- **Layout:** with four cases, move them into `cases/<name>/` and factor the shared helpers out of `mimo_cybergym.py`. Do this after `hold/image-check-v2` is merged, to avoid conflicts.
+  - ~~223 is a lower bound; related bugs under other issue IDs.~~ Done: 20 CyberGym tasks share a fix commit or crash signature with a MiMo bug (listed, not counted).
+  - ~~Docker images.~~ Done: 26 listed, build steps for all 1,000.
+  - ~~Within-project chance baseline for case 1.~~ Done: the excess remains (z = 2.2, p = 0.017); the exact-ID part is not significantly above chance (z = 0.9, p = 0.19).
+- **Layout:** with four cases, move them into `cases/<name>/` and factor the shared helpers out of `mimo_cybergym.py`. Do this after the case-1 batch is merged, to avoid conflicts.
   - Keep the README headings and the `out/` file paths unchanged: SWE-rebench-V2's dataset card and the eight public posts link to them.
   - If paths must move, leave the old ones in place.
 
 ## Paper: go (decided 2026-10-01)
 The gate was met: case 1 shows a clear text-vs-ID gap (0 of 278 caught by a 13-gram filter), case 2 is a second source-level overlap outside MiMo (between benchmarks), and case 3 adds a training-set case outside MiMo where text filters do work.
 - Venue details, the outline, the related-work notes and the draft are local in `drafts/` (gitignored). The review is double-anonymous, so this public file no longer names the venue.
-- Next: related-work sweep with every reference checked against its primary source; a draft for cases 2 and 3 and the method now, case 1 after the hold batch; an anonymized artifact mirror; an independent check of all numbers and wording before submission.
+- Done: related-work sweep with every reference checked against its primary source; a draft of all sections (case 1 completed 2026-10-07). Next: an anonymized artifact mirror; an independent check of all numbers and wording before submission.
 - The effect experiment stays out. It would run MiMo-Pro via API on overlapping vs matched non-overlapping CyberGym items, with a non-MiMo control. The minimum detectable difference is about 13–15pp, and RL spillover biases the effect toward zero.
 
 ## Budget and effort
