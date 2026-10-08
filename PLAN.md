@@ -1,8 +1,9 @@
 # agentleak — plan
 
-**Status (2026-10-07):**
+**Status (2026-10-08):**
 - Case 1 (MiMo-V2.6-RL-oss cyber vs CyberGym) is done and published in this repo.
-- The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). A follow-up was posted on 2026-10-01 with the text-check result and a question about how some images were built. Neither had a reply by 2026-10-07. The dev.to and social drafts in `drafts/` (local only, gitignored) are not posted yet.
+- The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). A follow-up was posted on 2026-10-01 with the text-check result and a question about how some images were built. Neither had a reply by 2026-10-07. A third comment on 2026-10-07 [pointed to the image results](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6#6ac676e5af611a7eb83675f6) and asked how the 135 images were built and which user the harness runs the agent as; no reply as of 2026-10-08.
+- Published 2026-10-08 (case 1 leading, short sections on cases 2 and 3): [dev.to write-up](https://dev.to/raimondasl/same-bug-two-ids-an-open-rl-dataset-shares-15-of-cybergyms-bugs-and-a-plain-id-join-misses-38-2b17), [LinkedIn](https://lnkd.in/p/gHmj74BW), [Bluesky](https://bsky.app/profile/raimondas.bsky.social/post/3mxemurvgvk2u), [Hachyderm](https://hachyderm.io/@raimondas/117405748058556801).
 - Case 2 (SEC-bench vs CyberGym, benchmark vs benchmark) is done: 33 of SEC-bench's 100 OSS-Fuzz instances are CyberGym bugs, but a plain ID join finds 3. See README.md. A heads-up was posted to the SEC-bench maintainers on 2026-10-01 ([SEC-bench/SEC-bench#4](https://github.com/SEC-bench/SEC-bench/issues/4)).
 - Case 3 (SWE-rebench-V2 training set vs Multi-SWE-bench, SWE-PolyBench and SWE-bench Multilingual) is done: 348 V2 tasks are the same PR at the same base commit as a benchmark task: 4–11% of each benchmark, and 13% of the Kotlin set added to Multi-SWE-bench after V2's release. Text filters would catch V2's overlap but not V2-PRs'. See README.md. A heads-up was posted to the V2 maintainers on 2026-10-01 ([nebius/SWE-rebench-V2 discussion #5](https://huggingface.co/datasets/nebius/SWE-rebench-V2/discussions/5)). V2's first author replied the same day (README.md, case 3):
   - they excluded all original SWE-bench repos, by repository;
@@ -18,7 +19,7 @@
 - Heads-ups to the other four benchmarks were posted on 2026-10-01, after case 4 was merged (#8):
   - CyberGym, cases 1 and 2: [sunblaze-ucb/cybergym#24](https://github.com/sunblaze-ucb/cybergym/issues/24).
   - Multi-SWE-bench, cases 3 and 4: [multi-swe-bench/multi-swe-bench#107](https://github.com/multi-swe-bench/multi-swe-bench/issues/107).
-  - SWE-PolyBench, cases 3 and 4: [amazon-science/SWE-PolyBench#43](https://github.com/amazon-science/SWE-PolyBench/issues/43).
+  - SWE-PolyBench, cases 3 and 4: [amazon-science/SWE-PolyBench#43](https://github.com/amazon-science/SWE-PolyBench/issues/43). A contributor acknowledged it on 2026-10-08, noting the overlap is not surprising given the strict task filtering; no change announced.
   - SWE-bench Multilingual, cases 3 and 4, posted on the SWE-bench tracker because Multilingual has none of its own: [SWE-bench/SWE-bench#673](https://github.com/SWE-bench/SWE-bench/issues/673).
   - With these, the maintainers of all seven datasets with overlaps have been told.
 - A short note on the MiMo cyber overlap was posted on Prime Intellect's open port of the MiMo tasksets on 2026-10-01 ([PrimeIntellect-ai/prime-envs#843](https://github.com/PrimeIntellect-ai/prime-envs/pull/843#issuecomment-5934239337)). No reply as of 2026-10-07. On 2026-10-06 the port's README switched its data source to a Prime Intellect mirror that, by the README's description, drops 70 tasks a trivial input already solves (930 remain). Whether the 930-task mirror still holds the overlapping tasks was not checked.
@@ -49,7 +50,7 @@ The case-1 numbers are in README.md:
 ## Phase 1: public note (now)
 1. ~~The user posts `drafts/hf_discussion.md` on the MiMo-V2.6-RL-oss discussions page from their own account.~~ Done 2026-09-30 (#6).
 2. ~~The user posts the follow-up `drafts/hf_followup.md` in #6 (text-filter result plus a question about the images).~~ Done 2026-10-01.
-3. ~~Wait for a reply, or until about 2026-10-08. Then add the image results to README.md.~~ Done 2026-10-07 (no reply). Next: once that PR is merged, the user posts `drafts/hf_update_case1.md` in #6 and publishes `drafts/devto.md`, then `drafts/social.md`. Scope (agreed 2026-10-01): one post led by case 1, with a short section on cases 2 and 3, including case 3's result that text filters work when both sides keep the original issue text.
+3. ~~Wait for a reply, or until about 2026-10-08. Then add the image results to README.md.~~ Done 2026-10-07 (no reply, #13). The #6 update was posted on 2026-10-07 and the write-up and social posts on 2026-10-08 (see Status). Scope (agreed 2026-10-01): one post led by case 1, with a short section on cases 2 and 3, including case 3's result that text filters work when both sides keep the original issue text.
 4. Hold `drafts/optional_model_repo_question.md` (Xiaomi's modified CyberGym harness). Post it on the model repo only if the dataset thread goes well.
 5. If Xiaomi fixes or annotates the dataset, update README.md and rerun against the new revision.
 
