@@ -73,7 +73,7 @@ One task layer is not listed: it only copies the build context into place and un
 - **The grader in the listed images does not use it.** In all 26 listed images, the grader `/root/server.py` that the image ends up with is the same file. 5 of the 26 have a fixed build, including one of the 6 variant images below. The grader names the vulnerable build `/root/binary`, the expected-crash file and its own state files, and never mentions the fixed build. It runs no fixed-build check. We did not read it in the other 130 images with a fixed build.
 - **Access:** the fixed build goes only to `/root`, which the build makes accessible to root only (`chmod 700 /root`). The vulnerable build and the source go to `/home/agent`, which the build gives to a non-root user `agent`; a separate `verify` user is also set up. So the images look meant for a non-root agent. But no build step sets a user, and the published config of the 26 listed images sets none either, so which user the agent runs as is decided outside the image. We did not check that, or anything else outside the image, such as a training harness. If you use these images, run the agent as a non-root user.
 - **Build variant:** 6 of the 135 images were built with a different entry point (`entrypoint.sh` in their build steps); none of the other 865 was. In the published config of the one we listed, no entry point is set. We did not check what else the variant changes.
-- **Why these 135 differ is not known.** The build steps do not say where the binaries came from. We asked the dataset authors in the [dataset discussion](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6) on 2026-10-01 and will add their answer here.
+- **Why these 135 differ is not known.** The build steps do not say where the binaries came from. We asked the dataset authors in the dataset's public discussion on 2026-10-01 and will add their answer here.
 - **It does not show** that these tasks were chosen because they are CyberGym tasks: the 135 exact-ID matches among MiMo's 445 old-ID tasks are not significantly above chance (128 ± 7.5 expected within projects, z = 0.9, p = 0.19; 122 ± 9 uniform, z = 1.5, p = 0.08), even though the bug overlap as a whole is modestly above chance. It also does not show that anything, inside or outside the image, used a fixed build.
 
 ### What this does and does not show
@@ -286,7 +286,7 @@ In total, 348 of V2's 32,079 tasks (1.1%) match a benchmark task.
 
 None of the 12 SWE-bench test repos (the same 12 as in Verified) is in V2. By contrast, each multilingual benchmark, including the Kotlin extension, shares a quarter or more of its repos with V2.
 
-V2's authors explained this after our heads-up ([discussion #5](https://huggingface.co/datasets/nebius/SWE-rebench-V2/discussions/5), 2026-10-01):
+V2's authors explained this after our heads-up in the dataset's public discussion (2026-10-01):
 - They excluded all repositories of the original SWE-bench, filtering by repository.
 - They did not explicitly filter against the other benchmarks listed here.
 - They added a warning to the dataset card the same day, linking to this section (revision `10483de0`). That commit changed only the card; the data files are identical to `475dd5e8`, so the results here apply to the current revision.
