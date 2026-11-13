@@ -208,7 +208,8 @@ def main():
         p["same_file_set"] = bool(bb) and set(bb) == set(tb)
 
     # 3. Text check: would a 13-gram (or 8-gram) filter between the training set's problem statement and the
-    #    benchmark's problem text flag the overlapping items? Filter view over all V2 rows; pair view for both sets.
+    #    benchmark's problem text flag the overlapping items? Filter view over all V2 rows and over the overlapping
+    #    V2-PRs rows (only those have their text loaded); pair view for both sets.
     overlap_v2 = {p["train"]["id"] for p in v2_pairs.values()}
     text_check = {"benchmark_text": "Multi-SWE-bench: resolved issues (title + body); PolyBench and Multilingual: problem_statement",
                   "training_text": "problem_statement"}
@@ -231,6 +232,15 @@ def main():
         text_check[f"v2_filter_{n}gram"] = {"overlap_flagged": flagged, "overlap_flagged_by_own_benchmark_item": flagged_own,
                                             "overlap": len(overlap_v2), "other_flagged": other_flagged,
                                             "other": len({t["id"] for t in v2}) - len(overlap_v2)}
+        prs_train = {p["train"]["id"]: p["train"] for p in v2_prs_pairs.values()}
+        prs_own = defaultdict(set)
+        for (bid, tid) in v2_prs_pairs:
+            prs_own[tid].add(bid)
+        prs_hits = {tid: set().union(*(gram_to_bench.get(hash(g), set()) for g in ngrams(words(t["text"]), n)))
+                    for tid, t in prs_train.items()}
+        text_check[f"v2_prs_overlap_filter_{n}gram"] = {
+            "overlap": len(prs_train), "overlap_flagged": sum(bool(h) for h in prs_hits.values()),
+            "overlap_flagged_by_own_benchmark_item": sum(bool(h & prs_own[tid]) for tid, h in prs_hits.items())}
     for label, pairs in (("v2", v2_pairs), ("v2_prs", v2_prs_pairs)):
         runs = sorted(longest_common_run(words(p["train"]["text"]), words(p["bench"]["text"])) for p in pairs.values())
         text_check[f"{label}_pairs_longest_shared_run"] = {

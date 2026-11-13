@@ -3,7 +3,7 @@
 **Status (2026-10-08):**
 - Case 1 (MiMo-V2.6-RL-oss cyber vs CyberGym) is done and published in this repo.
 - The HF note was posted on 2026-09-30 as [discussion #6](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6). A follow-up was posted on 2026-10-01 with the text-check result and a question about how some images were built. Neither had a reply by 2026-10-07. A third comment on 2026-10-07 [pointed to the image results](https://huggingface.co/datasets/XiaomiMiMo/MiMo-V2.6-RL-oss/discussions/6#6ac676e5af611a7eb83675f6) and asked how the 135 images were built and which user the harness runs the agent as; no reply as of 2026-10-08.
-- Published 2026-10-08 (case 1 leading, short sections on cases 2 and 3): [dev.to write-up](https://dev.to/raimondasl/same-bug-two-ids-an-open-rl-dataset-shares-15-of-cybergyms-bugs-and-a-plain-id-join-misses-38-2b17), [LinkedIn](https://lnkd.in/p/gHmj74BW), [Bluesky](https://bsky.app/profile/raimondas.bsky.social/post/3mxemurvgvk2u), [Hachyderm](https://hachyderm.io/@raimondas/117405748058556801).
+- Published 2026-10-08 (case 1 leading, short sections on cases 2 and 3): [dev.to write-up](https://dev.to/raimondasl/same-bug-two-ids-an-open-rl-dataset-shares-15-of-cybergyms-bugs-and-a-plain-id-join-misses-38-2b17), [LinkedIn](https://lnkd.in/p/gHmj74BW), [Bluesky](https://bsky.app/profile/raimondas.bsky.social/post/3mxemurvgvk2u), [Hachyderm](https://hachyderm.io/@raimondas/117405748058556801). A Bluesky reader asked on 2026-10-20 whether a filtered evaluation should also drop bugs that share a fix commit; the reply pointed to `out/related_bugs.csv`.
 - Case 2 (SEC-bench vs CyberGym, benchmark vs benchmark) is done: 33 of SEC-bench's 100 OSS-Fuzz instances are CyberGym bugs, but a plain ID join finds 3. See README.md. A heads-up was posted to the SEC-bench maintainers on 2026-10-01 ([SEC-bench/SEC-bench#4](https://github.com/SEC-bench/SEC-bench/issues/4)).
 - Case 3 (SWE-rebench-V2 training set vs Multi-SWE-bench, SWE-PolyBench and SWE-bench Multilingual) is done: 348 V2 tasks are the same PR at the same base commit as a benchmark task: 4–11% of each benchmark, and 13% of the Kotlin set added to Multi-SWE-bench after V2's release. Text filters would catch V2's overlap but not V2-PRs'. See README.md. A heads-up was posted to the V2 maintainers on 2026-10-01 ([nebius/SWE-rebench-V2 discussion #5](https://huggingface.co/datasets/nebius/SWE-rebench-V2/discussions/5)). V2's first author replied the same day (README.md, case 3):
   - they excluded all original SWE-bench repos, by repository;
@@ -52,13 +52,13 @@ The case-1 numbers are in README.md:
 2. ~~The user posts the follow-up `drafts/hf_followup.md` in #6 (text-filter result plus a question about the images).~~ Done 2026-10-01.
 3. ~~Wait for a reply, or until about 2026-10-08. Then add the image results to README.md.~~ Done 2026-10-07 (no reply, #13). The #6 update was posted on 2026-10-07 and the write-up and social posts on 2026-10-08 (see Status). Scope (agreed 2026-10-01): one post led by case 1, with a short section on cases 2 and 3, including case 3's result that text filters work when both sides keep the original issue text.
 4. Hold `drafts/optional_model_repo_question.md` (Xiaomi's modified CyberGym harness). Post it on the model repo only if the dataset thread goes well.
-5. If Xiaomi fixes or annotates the dataset, update README.md and rerun against the new revision.
+5. If Xiaomi fixes or annotates the dataset, update README.md and rerun against the new revision. As of 2026-10-20, Xiaomi's updates (2026-10-18 to 10-20) changed only the `code` config and the README; `cyber.parquet` is unchanged, so case 1 stands.
 
 ## Phase 2: audit across releases (weeks 1–3, CPU only, under $50)
 Case 1 is the template: one script per case, pinned revisions, outputs in `out/`. With four cases, move them into `cases/<name>/` (see Layout below).
 
 - **Source-ID joins:**
-  - Cyber: ~~SEC-bench vs CyberGym~~ done (case 2; also adds a same-fix join on patch blobs and a within-project chance baseline). Other ARVO/OSS-Fuzz-derived training sets vs CyberGym and SEC-bench. Check whether CyberFactory/OpenAegis data is available.
+  - Cyber: ~~SEC-bench vs CyberGym~~ done (case 2; also adds a same-fix join on patch blobs and a within-project chance baseline). Other ARVO/OSS-Fuzz-derived training sets vs CyberGym and SEC-bench. Check whether CyberFactory/OpenAegis data is available: not as of 2026-10-13 (its Hugging Face collection holds only the paper, and its GitHub repo is empty).
   - ~~Controls: datasets that say they excluded a benchmark~~ done (`controls.py`, README "Controls"):
     - **The exclusions hold.** `jm-rt/arvo-cybergym-2000` has 0 overlap with CyberGym. SWE-Gym, R2E-Gym and SWE-smith have 0 shared repos with SWE-bench test.
     - **A targeted exclusion covers only its target.** jm-rt (whose card says its second half was built outside CyberGym) holds 35 of SEC-bench's 100 OSS-Fuzz bugs, 0 of them found by a plain ID join. Corroboration: crash type and frame match for 22 of 35 (control 4.9%). The strict same-fix test confirms 10; SEC-bench's fix lines are contained in jm-rt's much larger build-tree diff for 28.
@@ -77,7 +77,7 @@ Case 1 is the template: one script per case, pinned revisions, outputs in `out/`
 ## Paper: go (decided 2026-10-01)
 The gate was met: case 1 shows a clear text-vs-ID gap (0 of 278 caught by a 13-gram filter), case 2 is a second source-level overlap outside MiMo (between benchmarks), and case 3 adds a training-set case outside MiMo where text filters do work.
 - Venue details, the outline, the related-work notes and the draft are local in `drafts/` (gitignored). The review is double-anonymous, so this public file no longer names the venue.
-- Done: related-work sweep with every reference checked against its primary source; a draft of all sections (case 1 completed 2026-10-07). Next: an anonymized artifact mirror; an independent check of all numbers and wording before submission.
+- Done: related-work sweep with every reference checked against its primary source; a draft of all sections (case 1 completed 2026-10-07); an anonymized artifact mirror (its link is kept out of this public repo); a final independent check of all numbers, references, anonymity and wording (2026-11-12).
 - The effect experiment stays out. It would run MiMo-Pro via API on overlapping vs matched non-overlapping CyberGym items, with a non-MiMo control. The minimum detectable difference is about 13–15pp, and RL spillover biases the effect toward zero.
 
 ## Budget and effort
