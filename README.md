@@ -9,7 +9,7 @@ Source-level overlap audits between open agentic training data and agentic bench
 | [3](#case-3-swe-rebench-v2-vs-multilingual-swe-benchmarks) | SWE-rebench-V2 (training) vs Multi-SWE-bench, SWE-PolyBench, SWE-bench Multilingual | 348 V2 tasks (+20 V2-PRs tasks) | 320 of 348 | 347 of 348 (V2-PRs: none of 20 pairs shares a 13-gram) |
 | [4](#case-4-the-swe-benchmarks-themselves) | Multi-SWE-bench, SWE-PolyBench, SWE-bench Multilingual, SWE-bench, SWE-bench Pro, with each other (benchmark vs benchmark) | 132 same-PR pairs: 128 Multi-SWE-bench, 113 SWE-PolyBench and 23 SWE-bench Multilingual tasks | 130 of 132 pairs | 130 of 132 pairs share a 13-gram |
 
-Against richer benchmark files the result can change. In case 2, a 13-gram filter against CyberGym's sanitizer reports flags 29 of 35, plus 40 of the other 265. In case 1, only 6 of 223 same-bug pairs share a 13-gram with CyberGym's report. Each section says what its finding does and does not show. None of them is a claim about any model's scores.
+Against richer benchmark files the result can change. In case 2, a 13-gram filter against same-project CyberGym sanitizer reports flags 29 of 35, plus 40 of the other 265. In case 1, only 6 of 223 same-bug pairs share a 13-gram with CyberGym's report. Each section says what its finding does and does not show. None of them is a claim about any model's scores.
 
 As a check on the method, the [controls](#controls-datasets-that-excluded-a-benchmark) section matches four datasets that say they excluded a benchmark. [Data and licenses](#data-and-licenses) lists what this repo publishes and each source's license.
 
@@ -190,7 +190,7 @@ Unlike case 1, this compares two benchmarks, not training data with a benchmark.
 
   For each of these texts, the filter flags none of the 35 overlapping instances and none of the other 265. Same-bug pairs share at most 4 words in a row.
 - **Against CyberGym's sanitizer reports** (`error.txt`, given to agents at levels 2 and 3): it flags most overlapping instances, plus extra flags. SEC-bench's `sanitizer_report` is the same kind of text.
-  - We ran this filter only against the 336 CyberGym reports in SEC-bench's projects, not all 1,507.
+  - Each SEC-bench instance is compared only with the CyberGym reports from its own project: 336 reports across the 27 projects the two benchmarks share, not all 1,507.
   - We first dropped sanitizer boilerplate, defined as 13-grams found in at least 3 of those 336 reports.
   - It flags **29 of the 35** overlapping instances, 27 of them through their own bug's CyberGym report.
   - It also flags 40 of the other 265 instances, which neither join links to a CyberGym task. We did not check these further.
@@ -300,7 +300,7 @@ Their answer covers the original SWE-bench only. For SWE-bench Pro, V2's paper s
   - `zeromicro/go-zero` #2041 (Multi-SWE-bench: #2032);
   - `briannesbitt/Carbon` #2667 (Multilingual: #2665, which is already among the 348).
 
-For V2-PRs, whose problem statements are written by an LLM, no. None of its 20 overlapping PRs shares even an 8-gram with the benchmark text; the longest shared run is 6 words.
+For V2-PRs, whose problem statements are written by an LLM, no. None of its 20 overlapping PRs shares even an 8-gram with the benchmark text; the longest shared run is 6 words. Run against all benchmark texts, a 13-gram filter (and an 8-gram one) flags none of the 20.
 
 ### What this does and does not show
 - **Does:**
